@@ -53,6 +53,7 @@ const indexData = {
     { id: "ts-dom", label: "DOM com TypeScript" },
     { id: "ts-modulos", label: "Módulos" },
     { id: "ts-async", label: "Promises e async/await" },
+    { id: "ts-erros", label: "Tratamento de erros (try/catch)" },
     { id: "ts-config", label: "tsconfig.json" },
     { id: "ts-boas-praticas", label: "Boas práticas" }
   ]

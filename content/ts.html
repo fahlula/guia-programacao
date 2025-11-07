@@ -4,7 +4,7 @@
   <div class="mini-index">
     <strong>Nesta seção você encontra:</strong>
     Introdução · Tipos básicos · Any / unknown / never · Union, literal, enum · Objetos e interfaces · Funções ·
-    Classes e herança · Generics · Narrowing · Utility types · DOM com TS · Módulos · Async/await.
+    Classes e herança · Generics · Narrowing · Utility types · DOM com TS · Módulos · Async/await · Try/catch · tsconfig.json · Boas práticas.
   </div>
 
   <h3>Introdução</h3>
@@ -719,6 +719,283 @@ async function carregarPosts() {
     console.log(post.title);
   });
 }</code></pre>
+</section>
+
+<section id="ts-erros" class="topic">
+  <h3>Tratamento de erros (try/catch)</h3>
+
+  <p><strong>O que é:</strong> mecanismo para capturar e tratar erros que podem acontecer durante a execução do código.</p>
+  <p><strong>Por que usar:</strong> previne que seu programa quebre completamente e permite lidar com situações inesperadas de forma controlada.</p>
+
+  <h4>Try/Catch básico</h4>
+  <p><strong>Explicação:</strong></p>
+  <ul>
+    <li><code>try { }</code> – bloco onde você coloca código que pode gerar erro;</li>
+    <li><code>catch (erro) { }</code> – bloco executado se algo der errado no try;</li>
+    <li><code>finally { }</code> – bloco que sempre executa, com ou sem erro.</li>
+  </ul>
+
+  <pre><code>function dividir(a: number, b: number): number {
+  try {
+    // Código que pode gerar erro
+    if (b === 0) {
+      throw new Error("Não é possível dividir por zero!");
+    }
+    return a / b;
+  } catch (erro) {
+    // Captura o erro e trata
+    console.error("Erro ao dividir:", erro);
+    return 0;
+  } finally {
+    // Sempre executa (opcional)
+    console.log("Operação de divisão finalizada");
+  }
+}
+
+console.log(dividir(10, 2));  // 5
+console.log(dividir(10, 0));  // Erro capturado, retorna 0</code></pre>
+
+  <h4>Tipos de erros</h4>
+  <p><strong>O que é:</strong> JavaScript/TypeScript tem diferentes tipos de erros nativos.</p>
+
+  <pre><code>// Error genérico
+throw new Error("Algo deu errado");
+
+// TypeError - tipo incorreto
+throw new TypeError("Esperava um número");
+
+// RangeError - valor fora do alcance
+throw new RangeError("Número deve ser entre 0 e 100");
+
+// ReferenceError - variável não existe
+// (geralmente não se lança manualmente)
+
+// SyntaxError - erro de sintaxe
+// (geralmente não se lança manualmente)</code></pre>
+
+  <h4>Criando erros customizados</h4>
+  <p><strong>O que é:</strong> criar suas próprias classes de erro para situações específicas.</p>
+  <p><strong>Por que usar:</strong> facilita identificar e tratar diferentes tipos de problema.</p>
+
+  <pre><code>// Classe de erro customizada
+class ValidacaoError extends Error {
+  constructor(public campo: string, mensagem: string) {
+    super(mensagem);
+    this.name = "ValidacaoError";
+  }
+}
+
+class AutenticacaoError extends Error {
+  constructor(mensagem: string) {
+    super(mensagem);
+    this.name = "AutenticacaoError";
+  }
+}
+
+// Usando erros customizados
+function validarIdade(idade: number) {
+  if (idade < 0) {
+    throw new ValidacaoError("idade", "Idade não pode ser negativa");
+  }
+  if (idade < 18) {
+    throw new ValidacaoError("idade", "Você deve ter 18 anos ou mais");
+  }
+  return true;
+}
+
+try {
+  validarIdade(-5);
+} catch (erro) {
+  if (erro instanceof ValidacaoError) {
+    console.log(`Erro no campo ${erro.campo}: ${erro.message}`);
+  }
+}</code></pre>
+
+  <h4>Try/Catch com async/await</h4>
+  <p><strong>O que é:</strong> capturar erros em operações assíncronas.</p>
+  <p><strong>Por que usar:</strong> APIs podem falhar, conexões podem cair - sempre trate erros em operações assíncronas.</p>
+
+  <pre><code>interface Usuario {
+  id: number;
+  nome: string;
+  email: string;
+}
+
+async function buscarUsuario(id: number): Promise&lt;Usuario | null&gt; {
+  try {
+    // Faz requisição à API
+    const resposta = await fetch(`https://api.exemplo.com/usuarios/${id}`);
+
+    // Verifica se a resposta foi bem-sucedida
+    if (!resposta.ok) {
+      throw new Error(`Erro HTTP: ${resposta.status}`);
+    }
+
+    // Converte para JSON
+    const dados: Usuario = await resposta.json();
+    return dados;
+
+  } catch (erro) {
+    // Trata diferentes tipos de erro
+    if (erro instanceof TypeError) {
+      console.error("Erro de rede ou JSON inválido:", erro);
+    } else if (erro instanceof Error) {
+      console.error("Erro na requisição:", erro.message);
+    }
+    return null;
+  }
+}
+
+// Usando a função
+async function exibirUsuario(id: number) {
+  const usuario = await buscarUsuario(id);
+
+  if (usuario) {
+    console.log(`Usuário: ${usuario.nome}`);
+  } else {
+    console.log("Não foi possível carregar o usuário");
+  }
+}</code></pre>
+
+  <h4>Tratamento específico por tipo de erro</h4>
+  <pre><code>async function processarDados(url: string) {
+  try {
+    const resposta = await fetch(url);
+    const dados = await resposta.json();
+    return dados;
+
+  } catch (erro) {
+    // Verifica o tipo do erro e trata de forma diferente
+    if (erro instanceof TypeError) {
+      console.error("Erro de tipo ou rede:", erro.message);
+      // Pode tentar novamente ou usar cache
+    } else if (erro instanceof SyntaxError) {
+      console.error("JSON inválido:", erro.message);
+      // Retornar dados padrão
+    } else if (erro instanceof Error) {
+      console.error("Erro genérico:", erro.message);
+    } else {
+      // Erro desconhecido
+      console.error("Erro desconhecido:", erro);
+    }
+
+    throw erro; // Re-lança o erro se necessário
+  }
+}</code></pre>
+
+  <h4>Finally - limpeza de recursos</h4>
+  <p><strong>O que é:</strong> bloco que sempre executa, independente de erro ou sucesso.</p>
+  <p><strong>Por que usar:</strong> fechar conexões, limpar recursos, esconder loading, etc.</p>
+
+  <pre><code>async function carregarDados() {
+  const loading = document.getElementById("loading");
+
+  try {
+    // Mostra loading
+    if (loading) loading.style.display = "block";
+
+    const resposta = await fetch("https://api.exemplo.com/dados");
+    const dados = await resposta.json();
+
+    // Processa dados
+    console.log(dados);
+
+  } catch (erro) {
+    console.error("Erro ao carregar:", erro);
+
+  } finally {
+    // SEMPRE esconde o loading, com erro ou sem
+    if (loading) loading.style.display = "none";
+  }
+}</code></pre>
+
+  <h4>Boas práticas com try/catch</h4>
+  <ul>
+    <li>✅ Sempre trate erros em operações assíncronas (fetch, promises)</li>
+    <li>✅ Seja específico: capture apenas erros que você sabe tratar</li>
+    <li>✅ Use erros customizados para situações específicas do seu domínio</li>
+    <li>✅ Logue erros para debug, mas mostre mensagens amigáveis ao usuário</li>
+    <li>✅ Use <code>finally</code> para limpeza de recursos</li>
+    <li>❌ Não deixe blocos catch vazios - sempre faça algo com o erro</li>
+    <li>❌ Não use try/catch para controle de fluxo normal</li>
+    <li>❌ Não capture tudo sem necessidade - deixe erros críticos quebrarem</li>
+  </ul>
+
+  <h4>Exemplo completo com validação</h4>
+  <pre><code>class ErroValidacao extends Error {
+  constructor(public erros: string[]) {
+    super("Erro de validação");
+    this.name = "ErroValidacao";
+  }
+}
+
+interface DadosFormulario {
+  nome: string;
+  email: string;
+  idade: number;
+}
+
+function validarFormulario(dados: DadosFormulario): void {
+  const erros: string[] = [];
+
+  if (!dados.nome || dados.nome.trim().length < 3) {
+    erros.push("Nome deve ter pelo menos 3 caracteres");
+  }
+
+  if (!dados.email || !dados.email.includes("@")) {
+    erros.push("Email inválido");
+  }
+
+  if (dados.idade < 18 || dados.idade > 120) {
+    erros.push("Idade deve estar entre 18 e 120 anos");
+  }
+
+  if (erros.length > 0) {
+    throw new ErroValidacao(erros);
+  }
+}
+
+async function salvarUsuario(dados: DadosFormulario) {
+  try {
+    // Valida os dados
+    validarFormulario(dados);
+
+    // Tenta salvar
+    const resposta = await fetch("https://api.exemplo.com/usuarios", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados)
+    });
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao salvar usuário");
+    }
+
+    console.log("Usuário salvo com sucesso!");
+
+  } catch (erro) {
+    if (erro instanceof ErroValidacao) {
+      // Mostra erros de validação ao usuário
+      console.log("Erros encontrados:");
+      erro.erros.forEach(e => console.log(`- ${e}`));
+    } else if (erro instanceof Error) {
+      // Erro de rede ou servidor
+      console.error("Erro ao salvar:", erro.message);
+    }
+  }
+}
+
+// Testando
+salvarUsuario({
+  nome: "Jo",
+  email: "invalido",
+  idade: 15
+});</code></pre>
+
+  <p class="small-note">
+    💡 <strong>Dica:</strong> Em produção, sempre registre erros em um serviço de monitoramento
+    (como Sentry, LogRocket) para identificar problemas que usuários encontram.
+  </p>
 </section>
 
 <section id="ts-config" class="topic">
