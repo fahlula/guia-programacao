@@ -1,6 +1,6 @@
-# 📚 Super Guia Completo: HTML, CSS e TypeScript
+# 📚 Super Guia Completo: HTML, CSS, JavaScript e TypeScript
 
-Um guia completo e prático de HTML, CSS e TypeScript em português, criado por estudante para estudantes!
+Um guia completo e prático de HTML, CSS, JavaScript e TypeScript em português, criado por estudante para estudantes!
 
 ## 🌐 Ver Online
 
@@ -8,7 +8,7 @@ Um guia completo e prático de HTML, CSS e TypeScript em português, criado por 
 
 ## ✨ Características
 
-- 📖 **Conteúdo completo** - HTML, CSS e TypeScript com explicações detalhadas
+- 📖 **Conteúdo completo** - HTML, CSS, JavaScript e TypeScript com explicações detalhadas
 - 🎨 **Interface moderna** - Design responsivo com modo claro/escuro
 - 💡 **Exemplos práticos** - Código de verdade que você pode testar
 - 🔍 **Navegação intuitiva** - Índice lateral para encontrar tópicos rapidamente
@@ -23,8 +23,11 @@ Estrutura básica, tags comuns, HTML semântico, listas e tabelas, formulários,
 ### CSS (14 tópicos)
 Sintaxe e seletores, box model, display/flex/grid, texto e cores, posicionamento, responsividade, pseudo-classes, animações, transforms, filtros, variáveis CSS, metodologias (BEM/SMACSS) e performance.
 
-### TypeScript (15 tópicos)
-Tipos básicos, objetos e interfaces, funções, classes e POO, generics, type guards, utility types, decorators, DOM com TS, módulos, async/await, **tratamento de erros (try/catch)**, tsconfig.json e boas práticas.
+### JavaScript (13 tópicos) ⭐ **NOVO!**
+Variáveis e escopo, operadores, estruturas condicionais (if/else/switch), loops (for/while), estruturas de dados (Array/Map/Set), funções, funções de alta ordem (map/filter/reduce), classes e POO, DOM, módulos, promises e async/await, tratamento de erros (try/catch).
+
+### TypeScript (9 tópicos)
+Tipos básicos, objetos e interfaces, generics, type guards, utility types, decorators, tsconfig.json e boas práticas.
 
 ## 🚀 Como Usar Localmente
 

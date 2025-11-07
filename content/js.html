@@ -1,0 +1,2052 @@
+<section id="js-intro" class="topic active">
+  <h2>⚙️ JavaScript — Fundamentos de Programação</h2>
+
+  <div class="mini-index">
+    <strong>Nesta seção você encontra:</strong>
+    Introdução · Variáveis e Escopo · Operadores · Condicionais (if/else/switch) · Loops (for/while) ·
+    Estruturas de Dados (Array, Map, Set) · Funções · Funções de Alta Ordem (map/filter/reduce) ·
+    Classes e POO · DOM · Módulos · Async/await · Try/catch.
+  </div>
+
+  <h3>Introdução ao JavaScript</h3>
+  <p><strong>O que é:</strong> JavaScript é a linguagem de programação da web. Roda no navegador e também no servidor (Node.js).</p>
+  <p><strong>Por que usar:</strong> é a ÚNICA linguagem que roda nativamente nos navegadores, permitindo criar páginas interativas e dinâmicas.</p>
+
+  <h4>Como usar JavaScript</h4>
+  <pre><code>// No navegador: dentro de tags &lt;script&gt; no HTML
+&lt;script&gt;
+  console.log("Olá, mundo!");
+&lt;/script&gt;
+
+// Ou em arquivo separado
+&lt;script src="script.js"&gt;&lt;/script&gt;</code></pre>
+
+  <h4>Console do navegador</h4>
+  <p>Pressione <strong>F12</strong> no navegador e vá na aba "Console" para testar código JavaScript.</p>
+  <pre><code>// Testar no console
+console.log("Teste");  // Imprime mensagem
+console.error("Erro"); // Imprime erro em vermelho
+console.warn("Aviso"); // Imprime aviso em amarelo</code></pre>
+
+  <p class="small-note">
+    <strong>Dica:</strong> JavaScript é case-sensitive: <code>nome</code> é diferente de <code>Nome</code>.
+  </p>
+</section>
+
+<section id="js-variaveis" class="topic">
+  <h3>Variáveis e Escopo</h3>
+  <p><strong>O que é:</strong> variáveis são "caixas" que guardam valores. Em JavaScript moderno, usamos <code>let</code>, <code>const</code> e (raramente) <code>var</code>.</p>
+  <p><strong>Por que usar:</strong> variáveis permitem armazenar e reutilizar dados ao longo do código.</p>
+
+  <h4>let - Variável que pode mudar</h4>
+  <pre><code>let idade = 25;
+idade = 26; // ✅ Pode alterar
+
+let nome = "Ana";
+nome = "Maria"; // ✅ Pode alterar
+
+// Escopo de bloco: só existe dentro de { }
+if (true) {
+  let mensagem = "Olá";
+  console.log(mensagem); // ✅ Funciona
+}
+// console.log(mensagem); // ❌ ERRO: fora do escopo</code></pre>
+
+  <h4>const - Constante (não pode mudar)</h4>
+  <pre><code>const PI = 3.14159;
+// PI = 3.14; // ❌ ERRO: não pode reatribuir
+
+const nome = "João";
+// nome = "Maria"; // ❌ ERRO
+
+// IMPORTANTE: objetos e arrays podem ter propriedades alteradas
+const usuario = { nome: "Ana", idade: 25 };
+usuario.idade = 26; // ✅ Pode alterar propriedade
+// usuario = {}; // ❌ ERRO: não pode reatribuir a variável
+
+const numeros = [1, 2, 3];
+numeros.push(4); // ✅ Pode adicionar ao array
+// numeros = []; // ❌ ERRO: não pode reatribuir</code></pre>
+
+  <h4>var - Evite usar (forma antiga)</h4>
+  <pre><code>// ❌ NÃO USE var em código moderno
+var x = 10;
+
+// Problemas do var:
+// 1. Escopo de função (não de bloco)
+if (true) {
+  var mensagem = "Oi";
+}
+console.log(mensagem); // ✅ Funciona (mas não deveria!)
+
+// 2. Permite redeclaração
+var y = 1;
+var y = 2; // ✅ Funciona (mas é confuso!)
+
+// ✅ SEMPRE use let ou const em vez de var</code></pre>
+
+  <h4>Quando usar let vs const</h4>
+  <ul>
+    <li><strong>const</strong> – use por padrão (valores que não vão mudar)</li>
+    <li><strong>let</strong> – use quando o valor vai mudar (contadores, acumuladores)</li>
+    <li><strong>var</strong> – nunca use em código moderno</li>
+  </ul>
+
+  <pre><code>// ✅ Bom uso de const
+const TAXA_JUROS = 0.05;
+const usuario = { nome: "Ana" };
+const cores = ["vermelho", "azul"];
+
+// ✅ Bom uso de let
+let contador = 0;
+for (let i = 0; i < 10; i++) {
+  contador += i;
+}
+
+let resposta = "";
+if (idade >= 18) {
+  resposta = "Maior de idade";
+} else {
+  resposta = "Menor de idade";
+}</code></pre>
+
+  <h4>Tipos de dados em JavaScript</h4>
+  <pre><code>// String (texto)
+const nome = "Ana";
+const sobrenome = 'Silva';
+const frase = `Olá, ${nome}!`; // template string
+
+// Number (número)
+const idade = 25;
+const preco = 19.99;
+const negativo = -10;
+
+// Boolean (verdadeiro/falso)
+const ativo = true;
+const bloqueado = false;
+
+// Undefined (não definido)
+let valor; // undefined
+
+// Null (vazio intencional)
+const vazio = null;
+
+// Object (objeto)
+const pessoa = { nome: "Ana", idade: 25 };
+
+// Array (lista)
+const frutas = ["maçã", "banana", "laranja"];</code></pre>
+
+  <h4>Escopo (onde a variável existe)</h4>
+  <pre><code>// Escopo global (fora de funções)
+const global = "Visível em todo lugar";
+
+function exemplo() {
+  // Escopo de função
+  const local = "Só existe aqui dentro";
+  console.log(global); // ✅ Acessa variável global
+
+  if (true) {
+    // Escopo de bloco
+    const bloco = "Só existe neste if";
+    console.log(local); // ✅ Acessa variável da função
+  }
+
+  // console.log(bloco); // ❌ ERRO: fora do escopo
+}
+
+// console.log(local); // ❌ ERRO: fora do escopo</code></pre>
+
+  <p class="small-note">
+    <strong>Regra de ouro:</strong> Sempre prefira <code>const</code>. Use <code>let</code> apenas quando realmente precisar mudar o valor. Nunca use <code>var</code>.
+  </p>
+</section>
+
+<section id="js-operadores" class="topic">
+  <h3>Operadores</h3>
+  <p><strong>O que é:</strong> símbolos que realizam operações com valores (somar, comparar, lógica, etc.).</p>
+  <p><strong>Por que usar:</strong> permitem fazer cálculos, comparações e tomar decisões no código.</p>
+
+  <h4>Operadores Aritméticos</h4>
+  <p><strong>O que é:</strong> operações matemáticas básicas.</p>
+  <pre><code>let a = 10;
+let b = 3;
+
+// Adição
+console.log(a + b);  // 13
+
+// Subtração
+console.log(a - b);  // 7
+
+// Multiplicação
+console.log(a * b);  // 30
+
+// Divisão
+console.log(a / b);  // 3.333...
+
+// Módulo (resto da divisão)
+console.log(a % b);  // 1 (10 dividido por 3 = 3, sobra 1)
+
+// Exponenciação (potência)
+console.log(2 ** 3);  // 8 (2 elevado a 3)
+
+// Incremento e decremento
+let contador = 0;
+contador++;  // contador = contador + 1 (agora é 1)
+contador--;  // contador = contador - 1 (volta a 0)
+
+let x = 5;
+x += 3;  // x = x + 3 (agora é 8)
+x -= 2;  // x = x - 2 (agora é 6)
+x *= 2;  // x = x * 2 (agora é 12)
+x /= 4;  // x = x / 4 (agora é 3)</code></pre>
+
+  <h4>Operadores de Comparação</h4>
+  <p><strong>O que é:</strong> comparam valores e retornam <code>true</code> ou <code>false</code>.</p>
+  <pre><code>let idade = 18;
+
+// Igual a (valor)
+console.log(idade == 18);     // true
+console.log(idade == "18");   // true (converte string para número)
+
+// Estritamente igual (valor E tipo)
+console.log(idade === 18);    // true
+console.log(idade === "18");  // false (tipos diferentes)
+
+// Diferente
+console.log(idade != 20);     // true
+console.log(idade !== "18");  // true (tipo diferente)
+
+// Maior que / Menor que
+console.log(idade > 17);      // true
+console.log(idade < 21);      // true
+console.log(idade >= 18);     // true (maior ou igual)
+console.log(idade <= 18);     // true (menor ou igual)
+
+// ✅ SEMPRE use === e !== (evita conversões inesperadas)</code></pre>
+
+  <h4>Operadores Lógicos</h4>
+  <p><strong>O que é:</strong> combinam condições booleanas (true/false).</p>
+  <pre><code>let idade = 20;
+let temCarteira = true;
+
+// AND (&&) - Verdadeiro se TODOS forem verdadeiros
+console.log(idade >= 18 && temCarteira);  // true (ambos verdadeiros)
+console.log(idade >= 18 && !temCarteira); // false (um é falso)
+
+// OR (||) - Verdadeiro se PELO MENOS UM for verdadeiro
+console.log(idade >= 18 || temCarteira);  // true
+console.log(idade < 18 || temCarteira);   // true (pelo menos um é verdadeiro)
+
+// NOT (!) - Inverte o valor
+console.log(!temCarteira);  // false (inverte true)
+console.log(!false);        // true
+
+// Exemplo prático
+if (idade >= 18 && temCarteira) {
+  console.log("Pode dirigir");
+} else {
+  console.log("Não pode dirigir");
+}</code></pre>
+
+  <h4>Operador Ternário (? :)</h4>
+  <p><strong>O que é:</strong> if/else simplificado em uma linha.</p>
+  <p><strong>Sintaxe:</strong> <code>condição ? valorSeVerdadeiro : valorSeFalso</code></p>
+  <pre><code>let idade = 20;
+
+// Forma tradicional (if/else)
+let status;
+if (idade >= 18) {
+  status = "Maior de idade";
+} else {
+  status = "Menor de idade";
+}
+
+// Forma simplificada (ternário)
+let status2 = idade >= 18 ? "Maior de idade" : "Menor de idade";
+
+// Exemplos práticos
+const preco = 100;
+const desconto = preco > 50 ? 0.1 : 0.05;  // 10% ou 5%
+console.log(`Desconto: ${desconto * 100}%`);
+
+const mensagem = temCarteira ? "Pode dirigir" : "Não pode dirigir";
+
+// Pode encadear (mas evite abusar - fica confuso)
+const nota = 85;
+const conceito = nota >= 90 ? "A" : nota >= 70 ? "B" : "C";</code></pre>
+
+  <h4>Operadores de String</h4>
+  <pre><code>// Concatenação com +
+const nome = "Ana";
+const sobrenome = "Silva";
+const nomeCompleto = nome + " " + sobrenome;  // "Ana Silva"
+
+// Template strings (forma moderna - PREFERIDA)
+const saudacao = `Olá, ${nome}!`;  // "Olá, Ana!"
+const mensagem = `${nome} tem ${idade} anos`;
+
+// Operador +=
+let texto = "Olá";
+texto += " mundo";  // texto = texto + " mundo" ("Olá mundo")</code></pre>
+
+  <h4>Operador Nullish Coalescing (??)</h4>
+  <p><strong>O que é:</strong> retorna o valor da direita se o da esquerda for <code>null</code> ou <code>undefined</code>.</p>
+  <pre><code>// ?? vs ||
+const valor1 = null ?? "padrão";      // "padrão"
+const valor2 = undefined ?? "padrão"; // "padrão"
+const valor3 = 0 ?? "padrão";         // 0 (não é null/undefined)
+const valor4 = "" ?? "padrão";        // "" (não é null/undefined)
+
+// || retorna direita se esquerda for FALSY (0, "", false, null, undefined)
+const valor5 = 0 || "padrão";         // "padrão" (0 é falsy)
+const valor6 = "" || "padrão";        // "padrão" ("" é falsy)
+
+// Exemplo prático
+function saudar(nome) {
+  const nomeReal = nome ?? "Visitante";
+  console.log(`Olá, ${nomeReal}!`);
+}
+
+saudar("Ana");      // "Olá, Ana!"
+saudar();           // "Olá, Visitante!"
+saudar(undefined);  // "Olá, Visitante!"</code></pre>
+
+  <h4>Optional Chaining (?.)</h4>
+  <p><strong>O que é:</strong> acessa propriedades sem causar erro se o objeto for <code>null</code> ou <code>undefined</code>.</p>
+  <pre><code>const usuario1 = {
+  nome: "Ana",
+  endereco: { rua: "Rua A", cidade: "São Paulo" }
+};
+
+const usuario2 = {
+  nome: "João"
+  // sem endereço
+};
+
+// Sem optional chaining (pode dar erro)
+// const cidade1 = usuario2.endereco.cidade; // ❌ ERRO!
+
+// Com optional chaining (retorna undefined se não existir)
+const cidade1 = usuario1.endereco?.cidade;  // "São Paulo"
+const cidade2 = usuario2.endereco?.cidade;  // undefined (sem erro!)
+
+// Também funciona com métodos
+const resultado = usuario1.calcular?.();  // só chama se existir
+
+// Combinando com ??
+const cidadeFinal = usuario2.endereco?.cidade ?? "Não informada";</code></pre>
+
+  <h4>Operador typeof</h4>
+  <p><strong>O que é:</strong> retorna o tipo de uma variável como string.</p>
+  <pre><code>console.log(typeof 42);          // "number"
+console.log(typeof "texto");     // "string"
+console.log(typeof true);        // "boolean"
+console.log(typeof undefined);   // "undefined"
+console.log(typeof null);        // "object" (bug histórico do JS!)
+console.log(typeof {});          // "object"
+console.log(typeof []);          // "object"
+console.log(typeof function(){}); // "function"
+
+// Uso prático
+function processar(valor) {
+  if (typeof valor === "string") {
+    console.log(valor.toUpperCase());
+  } else {
+    console.log(valor.toFixed(2));
+  }
+}</code></pre>
+
+  <h4>Tabela de precedência (ordem de execução)</h4>
+  <pre><code>// Da maior para menor precedência:
+// 1. Parênteses ()
+// 2. Exponenciação **
+// 3. Multiplicação *, Divisão /, Módulo %
+// 4. Adição +, Subtração -
+// 5. Comparação <, >, <=, >=
+// 6. Igualdade ==, !=, ===, !==
+// 7. AND lógico &&
+// 8. OR lógico ||
+// 9. Ternário ? :
+// 10. Atribuição =, +=, -=, etc
+
+// Exemplo
+const resultado = 2 + 3 * 4;  // 14 (não 20, pois * vem antes de +)
+const correto = (2 + 3) * 4;  // 20 (parênteses forçam a ordem)</code></pre>
+
+  <p class="small-note">
+    <strong>Dica:</strong> Use parênteses para deixar a ordem clara, mesmo quando não é necessário. Torna o código mais legível!
+  </p>
+</section>
+
+<section id="js-condicionais" class="topic">
+  <h3>Estruturas Condicionais</h3>
+  <p><strong>O que é:</strong> estruturas que permitem executar código diferente baseado em condições.</p>
+  <p><strong>Por que usar:</strong> tomar decisões no código (ex: se idade >= 18, faça isso, senão faça aquilo).</p>
+
+  <h4>if / else (se / senão)</h4>
+  <p><strong>O que é:</strong> executa um bloco se a condição for verdadeira.</p>
+  <pre><code>const idade = 20;
+
+// if simples
+if (idade >= 18) {
+  console.log("Você é maior de idade");
+}
+
+// if / else
+if (idade >= 18) {
+  console.log("Maior de idade");
+} else {
+  console.log("Menor de idade");
+}
+
+// if / else if / else (múltiplas condições)
+const nota = 85;
+
+if (nota >= 90) {
+  console.log("Aprovado com A");
+} else if (nota >= 70) {
+  console.log("Aprovado com B");
+} else if (nota >= 50) {
+  console.log("Aprovado com C");
+} else {
+  console.log("Reprovado");
+}</code></pre>
+
+  <h4>Condições compostas (AND e OR)</h4>
+  <pre><code>const idade = 20;
+const temCarteira = true;
+
+// AND (&&) - todas condições devem ser verdadeiras
+if (idade >= 18 && temCarteira) {
+  console.log("Pode dirigir");
+}
+
+// OR (||) - pelo menos uma condição deve ser verdadeira
+const diaSemana = "sábado";
+if (diaSemana === "sábado" || diaSemana === "domingo") {
+  console.log("É fim de semana!");
+}
+
+// Combinando AND e OR
+const hora = 14;
+const diaUtil = true;
+
+if ((hora >= 9 && hora <= 18) && diaUtil) {
+  console.log("Horário comercial");
+} else {
+  console.log("Fora do horário comercial");
+}</code></pre>
+
+  <h4>switch / case</h4>
+  <p><strong>O que é:</strong> compara um valor com múltiplos casos.</p>
+  <p><strong>Por que usar:</strong> mais legível que vários if/else quando há muitas opções.</p>
+  <pre><code>const diaSemana = "segunda";
+
+switch (diaSemana) {
+  case "segunda":
+    console.log("Início da semana");
+    break;  // importante! sem break, continua executando
+
+  case "terça":
+  case "quarta":
+  case "quinta":
+    console.log("Meio de semana");
+    break;
+
+  case "sexta":
+    console.log("Quase fim de semana!");
+    break;
+
+  case "sábado":
+  case "domingo":
+    console.log("Fim de semana!");
+    break;
+
+  default:  // se nenhum caso corresponder
+    console.log("Dia inválido");
+}
+
+// Exemplo com números
+const mes = 12;
+let estacao;
+
+switch (mes) {
+  case 12:
+  case 1:
+  case 2:
+    estacao = "Verão";
+    break;
+  case 3:
+  case 4:
+  case 5:
+    estacao = "Outono";
+    break;
+  case 6:
+  case 7:
+  case 8:
+    estacao = "Inverno";
+    break;
+  case 9:
+  case 10:
+  case 11:
+    estacao = "Primavera";
+    break;
+  default:
+    estacao = "Mês inválido";
+}
+
+console.log(estacao);</code></pre>
+
+  <h4>Operador Ternário (revisão)</h4>
+  <p><strong>O que é:</strong> if/else em uma única linha.</p>
+  <pre><code>const idade = 20;
+
+// Forma longa
+let mensagem;
+if (idade >= 18) {
+  mensagem = "Adulto";
+} else {
+  mensagem = "Criança/Adolescente";
+}
+
+// Forma curta (ternário)
+const mensagem2 = idade >= 18 ? "Adulto" : "Criança/Adolescente";
+
+// Exemplos práticos
+const preco = 100;
+const precoFinal = preco > 50 ? preco * 0.9 : preco;  // 10% desconto se > 50
+
+const usuario = "Ana";
+const saudacao = usuario ? `Olá, ${usuario}!` : "Olá, visitante!";
+
+// Ternário aninhado (evite abusar)
+const nota = 75;
+const conceito = nota >= 90 ? "A" : nota >= 70 ? "B" : nota >= 50 ? "C" : "D";</code></pre>
+
+  <h4>Truthy e Falsy (valores que se comportam como true/false)</h4>
+  <p><strong>O que é:</strong> valores que são considerados verdadeiros ou falsos em condições.</p>
+  <pre><code>// Valores FALSY (considerados false):
+// - false
+// - 0 (número zero)
+// - "" (string vazia)
+// - null
+// - undefined
+// - NaN (Not a Number)
+
+// Todos os outros valores são TRUTHY (considerados true)
+
+const nome = "";
+if (nome) {
+  console.log("Nome preenchido");  // não executa (string vazia é falsy)
+} else {
+  console.log("Nome não preenchido");  // executa
+}
+
+const quantidade = 0;
+if (quantidade) {
+  console.log("Tem produtos");  // não executa (0 é falsy)
+}
+
+// Cuidado com o 0!
+const idade = 0;
+if (idade) {
+  console.log("Idade válida");  // não executa mesmo que 0 seja válido
+}
+
+// Melhor forma:
+if (idade !== undefined && idade !== null) {
+  console.log("Idade válida");  // executa
+}
+
+// Ou use optional chaining e nullish coalescing
+const idadeFinal = idade ?? 18;  // usa 18 se for null ou undefined (mas 0 passa)</code></pre>
+
+  <h4>Guard clauses (retorno antecipado)</h4>
+  <p><strong>O que é:</strong> verificar condições no início e retornar cedo.</p>
+  <p><strong>Por que usar:</strong> evita if/else aninhados, torna código mais legível.</p>
+  <pre><code>// ❌ RUIM - ifs aninhados
+function calcularDesconto(valor, cupom) {
+  if (valor > 0) {
+    if (cupom) {
+      if (cupom === "DESC10") {
+        return valor * 0.9;
+      } else {
+        return valor;
+      }
+    } else {
+      return valor;
+    }
+  } else {
+    return 0;
+  }
+}
+
+// ✅ BOM - guard clauses
+function calcularDescontoMelhor(valor, cupom) {
+  // Valida condições no início e retorna cedo
+  if (valor <= 0) return 0;
+  if (!cupom) return valor;
+  if (cupom !== "DESC10") return valor;
+
+  return valor * 0.9;
+}
+
+// Outro exemplo
+function processarUsuario(usuario) {
+  // Guards no início
+  if (!usuario) {
+    console.log("Usuário não fornecido");
+    return;
+  }
+
+  if (!usuario.nome) {
+    console.log("Nome obrigatório");
+    return;
+  }
+
+  if (usuario.idade < 18) {
+    console.log("Deve ser maior de idade");
+    return;
+  }
+
+  // Código principal fica limpo
+  console.log(`Processando ${usuario.nome}`);
+  // ... resto da lógica
+}</code></pre>
+
+  <h4>Exemplo prático completo</h4>
+  <pre><code>// Sistema de classificação de idade para cinema
+function classificarFilme(idade) {
+  // Guard clause
+  if (idade < 0 || idade > 150) {
+    return "Idade inválida";
+  }
+
+  // Múltiplas condições
+  if (idade < 10) {
+    return "Livre para todas as idades";
+  } else if (idade >= 10 && idade < 12) {
+    return "Requer acompanhamento dos pais";
+  } else if (idade >= 12 && idade < 14) {
+    return "Não recomendado para menores de 12 anos";
+  } else if (idade >= 14 && idade < 16) {
+    return "Não recomendado para menores de 14 anos";
+  } else if (idade >= 16 && idade < 18) {
+    return "Não recomendado para menores de 16 anos";
+  } else {
+    return "Conteúdo adulto liberado";
+  }
+}
+
+console.log(classificarFilme(15));  // "Não recomendado para menores de 14 anos"
+
+// Calculadora de desconto por categoria
+function calcularPrecoFinal(preco, categoria, cupom) {
+  if (preco <= 0) return 0;
+
+  let desconto = 0;
+
+  // Desconto por categoria
+  switch (categoria) {
+    case "bronze":
+      desconto = 0.05;  // 5%
+      break;
+    case "prata":
+      desconto = 0.10;  // 10%
+      break;
+    case "ouro":
+      desconto = 0.15;  // 15%
+      break;
+  }
+
+  // Desconto adicional por cupom
+  if (cupom === "PROMO20") {
+    desconto += 0.20;
+  }
+
+  // Desconto máximo de 50%
+  if (desconto > 0.5) {
+    desconto = 0.5;
+  }
+
+  return preco * (1 - desconto);
+}
+
+console.log(calcularPrecoFinal(100, "ouro", "PROMO20"));  // R$ 65 (35% desconto)</code></pre>
+
+  <p class="small-note">
+    <strong>Dica:</strong> Prefira guard clauses e retornos antecipados a ifs aninhados. Torna o código muito mais legível!
+  </p>
+</section>
+
+<section id="js-loops" class="topic">
+  <h3>Laços de Repetição (Loops)</h3>
+  <p><strong>O que é:</strong> estruturas que repetem código várias vezes.</p>
+  <p><strong>Por que usar:</strong> evitar repetir o mesmo código manualmente (ex: processar cada item de uma lista).</p>
+
+  <h4>for (loop tradicional)</h4>
+  <p><strong>O que é:</strong> repete um bloco de código um número específico de vezes.</p>
+  <p><strong>Sintaxe:</strong> <code>for (inicialização; condição; incremento)</code></p>
+  <pre><code>// Imprime números de 0 a 4
+for (let i = 0; i < 5; i++) {
+  console.log(i);
+}
+// Saída: 0, 1, 2, 3, 4
+
+// Contar de 1 a 10
+for (let i = 1; i <= 10; i++) {
+  console.log(i);
+}
+
+// Contar de trás para frente
+for (let i = 10; i >= 0; i--) {
+  console.log(i);
+}
+
+// Incremento de 2 em 2
+for (let i = 0; i <= 10; i += 2) {
+  console.log(i);  // 0, 2, 4, 6, 8, 10
+}
+
+// Percorrer array (forma tradicional)
+const frutas = ["maçã", "banana", "laranja"];
+for (let i = 0; i < frutas.length; i++) {
+  console.log(`Fruta ${i}: ${frutas[i]}`);
+}</code></pre>
+
+  <h4>while (enquanto)</h4>
+  <p><strong>O que é:</strong> repete enquanto a condição for verdadeira.</p>
+  <p><strong>Por que usar:</strong> quando não sabe quantas vezes vai repetir.</p>
+  <pre><code>// While básico
+let contador = 0;
+while (contador < 5) {
+  console.log(contador);
+  contador++;
+}
+
+// Exemplo prático: adivinhar número
+let tentativas = 0;
+let numeroSecreto = 7;
+let palpite = 0;
+
+while (palpite !== numeroSecreto) {
+  palpite = Math.floor(Math.random() * 10) + 1;  // número aleatório 1-10
+  tentativas++;
+  console.log(`Tentativa ${tentativas}: ${palpite}`);
+}
+console.log(`Acertou em ${tentativas} tentativas!`);
+
+// Cuidado com loops infinitos!
+// ❌ NUNCA faça isso:
+// let x = 0;
+// while (x < 10) {
+//   console.log(x);
+//   // esqueceu de incrementar x - loop infinito!
+// }</code></pre>
+
+  <h4>do...while (faça...enquanto)</h4>
+  <p><strong>O que é:</strong> executa pelo menos uma vez, depois checa a condição.</p>
+  <p><strong>Por que usar:</strong> quando quer garantir que o código rode pelo menos uma vez.</p>
+  <pre><code>// Diferença entre while e do...while
+
+// while - pode não executar nenhuma vez
+let x = 10;
+while (x < 5) {
+  console.log("Não vai executar");  // não executa
+}
+
+// do...while - executa pelo menos uma vez
+let y = 10;
+do {
+  console.log("Executa pelo menos uma vez");  // executa!
+} while (y < 5);
+
+// Exemplo prático: menu
+let opcao;
+do {
+  console.log("1 - Novo");
+  console.log("2 - Abrir");
+  console.log("3 - Sair");
+  opcao = "3";  // simula entrada do usuário
+} while (opcao !== "3");</code></pre>
+
+  <h4>for...of (percorrer valores)</h4>
+  <p><strong>O que é:</strong> percorre valores de arrays, strings e outros iteráveis.</p>
+  <p><strong>Por que usar:</strong> forma moderna e simples de percorrer coleções.</p>
+  <pre><code>// Percorrer array
+const numeros = [10, 20, 30, 40];
+for (const num of numeros) {
+  console.log(num);
+}
+// Saída: 10, 20, 30, 40
+
+// Percorrer string
+const nome = "Ana";
+for (const letra of nome) {
+  console.log(letra);
+}
+// Saída: A, n, a
+
+// Com objetos
+const produtos = [
+  { nome: "Mouse", preco: 50 },
+  { nome: "Teclado", preco: 150 }
+];
+
+for (const produto of produtos) {
+  console.log(`${produto.nome}: R$ ${produto.preco}`);
+}
+
+// Com índice usando entries()
+for (const [index, fruta] of frutas.entries()) {
+  console.log(`${index}: ${fruta}`);
+}</code></pre>
+
+  <h4>for...in (percorrer chaves)</h4>
+  <p><strong>O que é:</strong> percorre chaves (propriedades) de objetos.</p>
+  <p><strong>Cuidado:</strong> não recomendado para arrays, use for...of.</p>
+  <pre><code>// Percorrer propriedades de objeto
+const usuario = {
+  nome: "Ana",
+  idade: 25,
+  cidade: "São Paulo"
+};
+
+for (const chave in usuario) {
+  console.log(`${chave}: ${usuario[chave]}`);
+}
+// Saída:
+// nome: Ana
+// idade: 25
+// cidade: São Paulo
+
+// ❌ EVITE usar for...in com arrays
+const arr = [10, 20, 30];
+for (const index in arr) {
+  console.log(index);  // "0", "1", "2" (strings, não números!)
+}
+
+// ✅ PREFIRA for...of com arrays
+for (const valor of arr) {
+  console.log(valor);  // 10, 20, 30
+}</code></pre>
+
+  <h4>forEach (método de array)</h4>
+  <p><strong>O que é:</strong> método que executa função para cada elemento do array.</p>
+  <p><strong>Por que usar:</strong> forma funcional de iterar, comum em código moderno.</p>
+  <pre><code>const frutas = ["maçã", "banana", "laranja"];
+
+// forEach básico
+frutas.forEach(function(fruta) {
+  console.log(fruta);
+});
+
+// Com arrow function (forma moderna)
+frutas.forEach((fruta) => {
+  console.log(fruta);
+});
+
+// Com índice e array completo
+frutas.forEach((fruta, index, array) => {
+  console.log(`${index}: ${fruta} (total: ${array.length})`);
+});
+
+// Exemplo prático: somar valores
+const numeros = [1, 2, 3, 4, 5];
+let soma = 0;
+
+numeros.forEach((num) => {
+  soma += num;
+});
+
+console.log(`Soma: ${soma}`);  // 15
+
+// Diferença: forEach NÃO pode usar break/continue
+// ❌ Não funciona:
+// frutas.forEach((fruta) => {
+//   if (fruta === "banana") break;  // ERRO!
+// });
+
+// ✅ Se precisa de break, use for...of:
+for (const fruta of frutas) {
+  if (fruta === "banana") break;  // funciona!
+  console.log(fruta);
+}</code></pre>
+
+  <h4>break e continue</h4>
+  <p><strong>O que é:</strong> controlam o fluxo dentro de loops.</p>
+  <ul>
+    <li><code>break</code> – sai do loop imediatamente</li>
+    <li><code>continue</code> – pula para a próxima iteração</li>
+  </ul>
+  <pre><code>// break - sair do loop
+for (let i = 0; i < 10; i++) {
+  if (i === 5) {
+    break;  // para quando chegar em 5
+  }
+  console.log(i);
+}
+// Saída: 0, 1, 2, 3, 4
+
+// continue - pular iteração
+for (let i = 0; i < 5; i++) {
+  if (i === 2) {
+    continue;  // pula o 2
+  }
+  console.log(i);
+}
+// Saída: 0, 1, 3, 4
+
+// Exemplo prático: procurar em array
+const nomes = ["Ana", "João", "Maria", "Pedro"];
+let encontrado = false;
+
+for (const nome of nomes) {
+  if (nome === "Maria") {
+    console.log("Encontrei Maria!");
+    encontrado = true;
+    break;  // para de procurar
+  }
+}
+
+// Exemplo: processar apenas números pares
+const numeros = [1, 2, 3, 4, 5, 6, 7, 8];
+
+for (const num of numeros) {
+  if (num % 2 !== 0) {
+    continue;  // pula números ímpares
+  }
+  console.log(`${num} é par`);
+}
+// Saída: 2 é par, 4 é par, 6 é par, 8 é par</code></pre>
+
+  <h4>Loops aninhados (um dentro do outro)</h4>
+  <pre><code>// Tabuada completa
+for (let i = 1; i <= 5; i++) {
+  for (let j = 1; j <= 5; j++) {
+    console.log(`${i} x ${j} = ${i * j}`);
+  }
+}
+
+// Matriz (array de arrays)
+const matriz = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
+];
+
+for (let linha = 0; linha < matriz.length; linha++) {
+  for (let coluna = 0; coluna < matriz[linha].length; coluna++) {
+    console.log(`[${linha}][${coluna}] = ${matriz[linha][coluna]}`);
+  }
+}</code></pre>
+
+  <h4>Quando usar cada tipo de loop</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>Loop</th>
+        <th>Quando usar</th>
+        <th>Exemplo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>for</code></td>
+        <td>Sabe quantas vezes vai repetir</td>
+        <td>Contar de 1 a 10</td>
+      </tr>
+      <tr>
+        <td><code>while</code></td>
+        <td>Não sabe quantas vezes (condição)</td>
+        <td>Até adivinhar número</td>
+      </tr>
+      <tr>
+        <td><code>do...while</code></td>
+        <td>Executar pelo menos uma vez</td>
+        <td>Menu de opções</td>
+      </tr>
+      <tr>
+        <td><code>for...of</code></td>
+        <td>Percorrer valores de array/string</td>
+        <td>Iterar lista de produtos</td>
+      </tr>
+      <tr>
+        <td><code>for...in</code></td>
+        <td>Percorrer chaves de objeto</td>
+        <td>Listar propriedades</td>
+      </tr>
+      <tr>
+        <td><code>forEach</code></td>
+        <td>Forma funcional com arrays</td>
+        <td>Processar cada item</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Exemplo completo: processamento de dados</h4>
+  <pre><code>const alunos = [
+  { nome: "Ana", notas: [8, 9, 7] },
+  { nome: "João", notas: [6, 7, 8] },
+  { nome: "Maria", notas: [9, 9, 10] }
+];
+
+// Calcular média de cada aluno
+for (const aluno of alunos) {
+  let soma = 0;
+
+  // Somar todas as notas
+  for (const nota of aluno.notas) {
+    soma += nota;
+  }
+
+  const media = soma / aluno.notas.length;
+  console.log(`${aluno.nome}: média ${media.toFixed(2)}`);
+}
+
+// Encontrar primeiro aluno com média >= 9
+let melhorAluno = null;
+
+for (const aluno of alunos) {
+  let soma = 0;
+  for (const nota of aluno.notas) {
+    soma += nota;
+  }
+
+  const media = soma / aluno.notas.length;
+
+  if (media >= 9) {
+    melhorAluno = aluno.nome;
+    break;  // para assim que encontrar
+  }
+}
+
+if (melhorAluno) {
+  console.log(`Melhor aluno: ${melhorAluno}`);
+}</code></pre>
+
+  <p class="small-note">
+    <strong>Dica:</strong> Em código moderno, prefira <code>for...of</code> e <code>forEach</code> ao <code>for</code> tradicional quando possível. São mais legíveis e menos propensos a erros!
+  </p>
+</section>
+
+<section id="js-estruturas-dados" class="topic">
+  <h3>Estruturas de Dados</h3>
+  <p><strong>O que é:</strong> formas de organizar e armazenar dados: arrays, objetos, Map, Set, etc.</p>
+  <p><strong>Por que usar:</strong> cada estrutura é ideal para diferentes situações (busca, ordenação, unicidade, etc.).</p>
+
+  <h4>Arrays - Métodos essenciais</h4>
+  <p><strong>O que é:</strong> lista ordenada de valores.</p>
+  <pre><code>// Declaração
+const numeros = [1, 2, 3, 4, 5];
+const nomes = ["Ana", "João", "Maria"];
+
+// push() - adiciona no final
+numeros.push(6);  // [1, 2, 3, 4, 5, 6]
+
+// pop() - remove do final
+const ultimo = numeros.pop();  // 6, array fica [1, 2, 3, 4, 5]
+
+// unshift() - adiciona no início
+numeros.unshift(0);  // [0, 1, 2, 3, 4, 5]
+
+// shift() - remove do início
+const primeiro = numeros.shift();  // 0, array fica [1, 2, 3, 4, 5]
+
+// slice() - copia parte do array (não modifica original)
+const meio = numeros.slice(1, 3);  // [2, 3]
+
+// splice() - remove/adiciona elementos (MODIFICA original)
+numeros.splice(2, 1);  // remove 1 elemento na posição 2
+numeros.splice(2, 0, 10);  // adiciona 10 na posição 2
+
+// indexOf() - encontra índice de elemento
+const indice = nomes.indexOf("Maria");  // 2
+
+// includes() - verifica se contém elemento
+const temAna = nomes.includes("Ana");  // true
+
+// find() - retorna primeiro elemento que atende condição
+const encontrado = numeros.find(num => num > 3);  // 4
+
+// findIndex() - retorna índice do primeiro que atende condição
+const indiceEncontrado = numeros.findIndex(num => num > 3);  // 3
+
+// concat() - junta arrays
+const array1 = [1, 2];
+const array2 = [3, 4];
+const junto = array1.concat(array2);  // [1, 2, 3, 4]
+
+// join() - transforma em string
+const texto = nomes.join(", ");  // "Ana, João, Maria"
+
+// reverse() - inverte ordem (MODIFICA original)
+numeros.reverse();  // [5, 4, 3, 2, 1]
+
+// sort() - ordena (MODIFICA original)
+numeros.sort();  // ordem alfabética por padrão
+numeros.sort((a, b) => a - b);  // ordem numérica crescente
+numeros.sort((a, b) => b - a);  // ordem numérica decrescente</code></pre>
+
+  <h4>Array de objetos</h4>
+  <pre><code>const produtos = [
+  { id: 1, nome: "Mouse", preco: 50 },
+  { id: 2, nome: "Teclado", preco: 150 },
+  { id: 3, nome: "Monitor", preco: 800 }
+];
+
+// Buscar produto por ID
+const produto = produtos.find(p => p.id === 2);
+
+// Verificar se todos produtos custam menos de 1000
+const todosCabemOrcamento = produtos.every(p => p.preco < 1000);  // true
+
+// Verificar se algum produto custa mais de 500
+const temCaro = produtos.some(p => p.preco > 500);  // true</code></pre>
+
+  <h4>Spread operator (...) com arrays</h4>
+  <p><strong>O que é:</strong> "espalha" elementos de um array.</p>
+  <pre><code>// Copiar array
+const original = [1, 2, 3];
+const copia = [...original];  // [1, 2, 3] (cópia independente)
+
+// Concatenar
+const arr1 = [1, 2];
+const arr2 = [3, 4];
+const concatenado = [...arr1, ...arr2];  // [1, 2, 3, 4]
+
+// Adicionar elementos
+const comNovos = [0, ...original, 4, 5];  // [0, 1, 2, 3, 4, 5]
+
+// Passar array como argumentos
+const numeros = [5, 10, 3];
+console.log(Math.max(...numeros));  // 10 (equivale a Math.max(5, 10, 3))</code></pre>
+
+  <h4>Destructuring de arrays</h4>
+  <p><strong>O que é:</strong> extrair valores de arrays para variáveis.</p>
+  <pre><code>const frutas = ["maçã", "banana", "laranja"];
+
+// Destructuring básico
+const [primeira, segunda] = frutas;
+console.log(primeira);  // "maçã"
+console.log(segunda);   // "banana"
+
+// Pular elementos
+const [primeir, , terceira] = frutas;
+console.log(terceira);  // "laranja"
+
+// Rest operator (resto)
+const [first, ...resto] = frutas;
+console.log(first);  // "maçã"
+console.log(resto);  // ["banana", "laranja"]
+
+// Trocar valores de variáveis
+let a = 1;
+let b = 2;
+[a, b] = [b, a];  // a = 2, b = 1</code></pre>
+
+  <h4>Map - Chave-Valor com qualquer tipo de chave</h4>
+  <p><strong>O que é:</strong> estrutura que mapeia chaves para valores. Diferente de objetos, aceita qualquer tipo como chave.</p>
+  <p><strong>Por que usar:</strong> mais eficiente para adicionar/remover pares, mantém ordem de inserção.</p>
+  <pre><code>// Criar Map
+const mapa = new Map();
+
+// Adicionar valores
+mapa.set("Ana", 25);
+mapa.set("João", 30);
+mapa.set("Maria", 22);
+
+// Obter valor
+const idadeAna = mapa.get("Ana");  // 25
+
+// Verificar se existe
+const tem = mapa.has("João");  // true
+
+// Remover
+mapa.delete("João");
+
+// Tamanho
+console.log(mapa.size);  // 2
+
+// Limpar tudo
+mapa.clear();
+
+// Map com objetos como chave (diferente de objetos comuns!)
+const usuario1 = { id: 1, nome: "Ana" };
+const usuario2 = { id: 2, nome: "João" };
+
+const permissoes = new Map();
+permissoes.set(usuario1, ["ler", "escrever"]);
+permissoes.set(usuario2, ["ler"]);
+
+console.log(permissoes.get(usuario1));  // ["ler", "escrever"]
+
+// Iterar sobre Map
+for (const [chave, valor] of mapa) {
+  console.log(`${chave}: ${valor}`);
+}
+
+// Somente chaves
+for (const chave of mapa.keys()) {
+  console.log(chave);
+}
+
+// Somente valores
+for (const valor of mapa.values()) {
+  console.log(valor);
+}</code></pre>
+
+  <h4>Set - Conjunto de valores únicos</h4>
+  <p><strong>O que é:</strong> coleção que armazena apenas valores únicos (sem duplicatas).</p>
+  <p><strong>Por que usar:</strong> remover duplicatas, verificar existência rapidamente.</p>
+  <pre><code>// Criar Set
+const conjunto = new Set();
+
+// Adicionar valores
+conjunto.add(1);
+conjunto.add(2);
+conjunto.add(3);
+conjunto.add(2);  // ignorado (já existe)
+
+console.log(conjunto);  // Set(3) {1, 2, 3}
+console.log(conjunto.size);  // 3
+
+// Verificar existência
+conjunto.has(2);  // true
+
+// Remover
+conjunto.delete(2);
+
+// Limpar
+conjunto.clear();
+
+// Criar Set a partir de array (remove duplicatas!)
+const numerosComDuplicatas = [1, 2, 2, 3, 3, 3, 4];
+const unicos = new Set(numerosComDuplicatas);
+console.log([...unicos]);  // [1, 2, 3, 4]
+
+// Iterar
+for (const valor of conjunto) {
+  console.log(valor);
+}
+
+// Exemplo prático: tags únicas
+const tags = new Set();
+tags.add("javascript");
+tags.add("typescript");
+tags.add("javascript");  // ignorado
+
+console.log([...tags]);  // ["javascript", "typescript"]</code></pre>
+
+  <h4>Objetos como dicionários</h4>
+  <pre><code>// Objeto simples como mapa chave-valor
+const idades = {
+  "Ana": 25,
+  "João": 30,
+  "Maria": 22
+};
+
+// Acessar
+console.log(idades["Ana"]);  // 25
+console.log(idades.João);    // 30
+
+// Adicionar
+idades["Pedro"] = 28;
+
+// Remover
+delete idades["João"];
+
+// Verificar se existe
+if ("Ana" in idades) {
+  console.log("Ana existe");
+}
+
+// Iterar sobre chaves
+for (const nome in idades) {
+  console.log(`${nome}: ${idades[nome]}`);
+}
+
+// Métodos úteis de Object
+const chaves = Object.keys(idades);      // ["Ana", "Maria", "Pedro"]
+const valores = Object.values(idades);   // [25, 22, 28]
+const entradas = Object.entries(idades); // [["Ana", 25], ["Maria", 22], ...]
+
+// Transformar entries em Map
+const mapaIdades = new Map(Object.entries(idades));</code></pre>
+
+  <h4>Quando usar cada estrutura</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>Estrutura</th>
+        <th>Quando usar</th>
+        <th>Vantagem</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Array</strong></td>
+        <td>Lista ordenada de valores</td>
+        <td>Acesso por índice, métodos úteis</td>
+      </tr>
+      <tr>
+        <td><strong>Object</strong></td>
+        <td>Chaves string simples</td>
+        <td>Sintaxe simples, JSON compatível</td>
+      </tr>
+      <tr>
+        <td><strong>Map</strong></td>
+        <td>Chaves de qualquer tipo, muitas modificações</td>
+        <td>Performance, mantém ordem, chaves não-string</td>
+      </tr>
+      <tr>
+        <td><strong>Set</strong></td>
+        <td>Valores únicos, verificar existência</td>
+        <td>Remove duplicatas automaticamente</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Exemplo prático completo</h4>
+  <pre><code>// Sistema de carrinho de compras
+class CarrinhoCompras {
+  constructor() {
+    // Map para itens (chave = ID, valor = {produto, quantidade})
+    this.itens = new Map();
+  }
+
+  adicionar(produto, quantidade = 1) {
+    const existente = this.itens.get(produto.id);
+
+    if (existente) {
+      // Já existe, aumenta quantidade
+      existente.quantidade += quantidade;
+    } else {
+      // Novo item
+      this.itens.set(produto.id, { produto, quantidade });
+    }
+  }
+
+  remover(id) {
+    this.itens.delete(id);
+  }
+
+  calcularTotal() {
+    let total = 0;
+
+    for (const { produto, quantidade } of this.itens.values()) {
+      total += produto.preco * quantidade;
+    }
+
+    return total;
+  }
+
+  listar() {
+    for (const [id, { produto, quantidade }] of this.itens) {
+      console.log(`${produto.nome} x${quantidade} = R$ ${produto.preco * quantidade}`);
+    }
+    console.log(`Total: R$ ${this.calcularTotal()}`);
+  }
+}
+
+// Usar
+const carrinho = new CarrinhoCompras();
+carrinho.adicionar({ id: 1, nome: "Mouse", preco: 50 }, 2);
+carrinho.adicionar({ id: 2, nome: "Teclado", preco: 150 });
+carrinho.listar();
+// Mouse x2 = R$ 100
+// Teclado x1 = R$ 150
+// Total: R$ 250</code></pre>
+
+  <p class="small-note">
+    <strong>Dica:</strong> Use <strong>Array</strong> para listas, <strong>Map</strong> para dicionários mutáveis, <strong>Set</strong> para valores únicos, e <strong>Object</strong> para dados estruturados simples.
+  </p>
+</section>
+
+<section id="js-funcoes" class="topic">
+  <h3>Funções</h3>
+
+  <h4>Funções básicas</h4>
+  <p><strong>O que é:</strong> bloco de código reutilizável que executa uma tarefa específica.</p>
+  <p><strong>Por que usar:</strong> evita repetição de código e organiza a lógica do programa.</p>
+
+  <pre><code>function somar(a, b) {
+  return a + b;
+}
+
+function logar(mensagem) {
+  console.log(mensagem);
+}</code></pre>
+
+  <h4>Funções anônimas e arrow functions</h4>
+  <p><strong>O que é:</strong> formas curtas de declarar funções.</p>
+  <p><strong>Por que usar:</strong> muito usadas em callbacks e código moderno (React, etc.).</p>
+
+  <pre><code>const multiplicar = (a, b) => a * b;
+
+const saudar = (nome) => `Olá, ${nome}!`;</code></pre>
+
+  <h4>Parâmetros opcionais e padrão</h4>
+  <p><strong>O que é:</strong> parâmetros que podem estar ausentes e valores padrão.</p>
+  <p><strong>Por que usar:</strong> torna funções mais flexíveis, sem precisar criar várias versões.</p>
+
+  <pre><code>function apresentar(nome, idade) {
+  if (idade) {
+    return `Meu nome é ${nome} e tenho ${idade} anos.`;
+  }
+  return `Meu nome é ${nome}.`;
+}
+
+function aplicarDesconto(preco, desconto = 0.1) {
+  return preco - preco * desconto;
+}</code></pre>
+</section>
+
+<section id="js-alta-ordem" class="topic">
+  <h3>Funções de Alta Ordem</h3>
+  <p><strong>O que é:</strong> funções que recebem outras funções como parâmetro ou retornam funções.</p>
+  <p><strong>Por que usar:</strong> permitem código mais funcional, reutilizável e declarativo (foca no "o que fazer", não "como fazer").</p>
+
+  <h4>Conceito básico: funções como valores</h4>
+  <pre><code>// Funções podem ser atribuídas a variáveis
+const somar = (a, b) => a + b;
+
+// Funções podem ser passadas como argumentos
+function executarOperacao(a, b, operacao) {
+  return operacao(a, b);
+}
+
+const resultado1 = executarOperacao(5, 3, somar);  // 8
+const resultado2 = executarOperacao(5, 3, (a, b) => a * b);  // 15
+
+// Funções podem retornar funções
+function criarMultiplicador(fator) {
+  return (n) => n * fator;
+}
+
+const dobrar = criarMultiplicador(2);
+const triplicar = criarMultiplicador(3);
+
+console.log(dobrar(5));     // 10
+console.log(triplicar(5));  // 15</code></pre>
+
+  <h4>map() - Transformar cada elemento</h4>
+  <p><strong>O que é:</strong> cria novo array aplicando função a cada elemento.</p>
+  <p><strong>Por que usar:</strong> transformar dados sem modificar array original.</p>
+  <pre><code>const numeros = [1, 2, 3, 4, 5];
+
+// Dobrar cada número
+const dobrados = numeros.map((n) => n * 2);
+console.log(dobrados);  // [2, 4, 6, 8, 10]
+
+// Com objetos
+const produtos = [
+  { nome: "Mouse", preco: 50 },
+  { nome: "Teclado", preco: 150 }
+];
+
+// Extrair apenas nomes
+const nomes = produtos.map(p => p.nome);
+// ["Mouse", "Teclado"]
+
+// Aplicar desconto de 10%
+const comDesconto = produtos.map(p => ({
+  ...p,
+  preco: p.preco * 0.9
+}));
+
+// Com índice
+const comIndice = numeros.map((num, index) => `${index}: ${num}`);
+// ["0: 1", "1: 2", "2: 3", "3: 4", "4: 5"]</code></pre>
+
+  <h4>filter() - Filtrar elementos</h4>
+  <p><strong>O que é:</strong> cria novo array apenas com elementos que passam no teste.</p>
+  <p><strong>Por que usar:</strong> selecionar apenas dados que atendem condição.</p>
+  <pre><code>const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// Apenas números pares
+const pares = numeros.filter(n => n % 2 === 0);
+// [2, 4, 6, 8, 10]
+
+// Apenas maiores que 5
+const maiores = numeros.filter(n => n > 5);
+// [6, 7, 8, 9, 10]
+
+// Com objetos
+const produtos = [
+  { nome: "Mouse", preco: 50 },
+  { nome: "Teclado", preco: 150 },
+  { nome: "Monitor", preco: 800 }
+];
+
+// Produtos baratos (< 100)
+const baratos = produtos.filter(p => p.preco < 100);
+// [{ nome: "Mouse", preco: 50 }]
+
+// Combinar condições
+const carosComM = produtos.filter(p =>
+  p.preco > 100 && p.nome.startsWith("M")
+);
+// [{ nome: "Monitor", preco: 800 }]</code></pre>
+
+  <h4>reduce() - Reduzir a um único valor</h4>
+  <p><strong>O que é:</strong> processa array e retorna um único valor acumulado.</p>
+  <p><strong>Por que usar:</strong> somar, calcular totais, transformar estruturas.</p>
+  <pre><code>const numeros = [1, 2, 3, 4, 5];
+
+// Somar todos
+const soma = numeros.reduce((acumulador, atual) => acumulador + atual, 0);
+// 15
+
+// Como funciona:
+// 1ª iteração: acumulador = 0, atual = 1, retorna 0 + 1 = 1
+// 2ª iteração: acumulador = 1, atual = 2, retorna 1 + 2 = 3
+// 3ª iteração: acumulador = 3, atual = 3, retorna 3 + 3 = 6
+// 4ª iteração: acumulador = 6, atual = 4, retorna 6 + 4 = 10
+// 5ª iteração: acumulador = 10, atual = 5, retorna 10 + 5 = 15
+
+// Multiplicar todos
+const produto = numeros.reduce((acc, n) => acc * n, 1);
+// 120
+
+// Encontrar maior valor
+const maior = numeros.reduce((max, n) => n > max ? n : max, numeros[0]);
+// 5
+
+// Com objetos: calcular total do carrinho
+const carrinho = [
+  { nome: "Mouse", preco: 50 },
+  { nome: "Teclado", preco: 150 }
+];
+
+const total = carrinho.reduce((soma, produto) => soma + produto.preco, 0);
+// 200
+
+// Transformar array em objeto
+const usuarios = [
+  { id: 1, nome: "Ana" },
+  { id: 2, nome: "João" }
+];
+
+const usuariosPorId = usuarios.reduce((obj, usuario) => {
+  obj[usuario.id] = usuario;
+  return obj;
+}, {});
+// { 1: { id: 1, nome: "Ana" }, 2: { id: 2, nome: "João" } }
+
+// Contar ocorrências
+const frutas = ["maçã", "banana", "maçã", "laranja", "banana", "maçã"];
+const contagem = frutas.reduce((acc, fruta) => {
+  acc[fruta] = (acc[fruta] || 0) + 1;
+  return acc;
+}, {});
+// { maçã: 3, banana: 2, laranja: 1 }</code></pre>
+
+  <h4>Encadeando métodos (chaining)</h4>
+  <p><strong>O que é:</strong> combinar map, filter, reduce em sequência.</p>
+  <p><strong>Por que usar:</strong> processar dados em múltiplas etapas de forma legível.</p>
+  <pre><code>const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// Filtrar pares, dobrar, somar tudo
+const resultado = numeros
+  .filter(n => n % 2 === 0)    // [2, 4, 6, 8, 10]
+  .map(n => n * 2)              // [4, 8, 12, 16, 20]
+  .reduce((acc, n) => acc + n, 0);  // 60
+
+// Exemplo prático: processar pedidos
+const pedidos = [
+  { id: 1, valor: 100, status: "pago" },
+  { id: 2, valor: 200, status: "pendente" },
+  { id: 3, valor: 150, status: "pago" },
+  { id: 4, valor: 50, status: "cancelado" }
+];
+
+// Calcular total de pedidos pagos
+const totalPago = pedidos
+  .filter(p => p.status === "pago")
+  .map(p => p.valor)
+  .reduce((acc, valor) => acc + valor, 0);
+// 250
+
+// Transformar para formato de relatório
+const relatorio = pedidos
+  .filter(p => p.status !== "cancelado")
+  .map(p => ({
+    id: p.id,
+    valor: `R$ ${p.valor.toFixed(2)}`,
+    pago: p.status === "pago"
+  }));
+// [
+//   { id: 1, valor: "R$ 100.00", pago: true },
+//   { id: 2, valor: "R$ 200.00", pago: false },
+//   { id: 3, valor: "R$ 150.00", pago: true }
+// ]</code></pre>
+
+  <h4>Exemplo completo: pipeline de dados</h4>
+  <pre><code>const vendas = [
+  { id: 1, produto: "Mouse", valor: 50, quantidade: 2, vendedor: "Ana" },
+  { id: 2, produto: "Teclado", valor: 150, quantidade: 1, vendedor: "João" },
+  { id: 3, produto: "Mouse", valor: 50, quantidade: 3, vendedor: "Ana" },
+  { id: 4, produto: "Monitor", valor: 800, quantidade: 1, vendedor: "Maria" }
+];
+
+// Total de vendas por vendedor
+const totalPorVendedor = vendas
+  .map(v => ({
+    vendedor: v.vendedor,
+    total: v.valor * v.quantidade
+  }))
+  .reduce((acc, { vendedor, total }) => {
+    acc[vendedor] = (acc[vendedor] || 0) + total;
+    return acc;
+  }, {});
+// { Ana: 250, João: 150, Maria: 800 }</code></pre>
+
+  <p class="small-note">
+    <strong>Dica:</strong> Use <code>map</code> para transformar, <code>filter</code> para selecionar, <code>reduce</code> para agregar. Encadeie para criar pipelines de processamento!
+  </p>
+</section>
+
+<section id="js-classes" class="topic">
+  <h3>Classes e POO</h3>
+
+  <h4>Classe básica</h4>
+  <p><strong>O que é:</strong> molde para criar objetos com dados (propriedades) e comportamento (métodos).</p>
+  <p><strong>Por que usar:</strong> ajuda a organizar código orientado a objetos, principalmente em apps grandes.</p>
+
+  <pre><code>class Pessoa {
+  constructor(nome, idade) {
+    this.nome = nome;
+    this.idade = idade;
+  }
+
+  apresentar() {
+    return `Eu sou ${this.nome} e tenho ${this.idade} anos.`;
+  }
+}
+
+const p = new Pessoa("Carlos", 28);
+console.log(p.apresentar());</code></pre>
+
+  <h4>Encapsulamento (privacidade)</h4>
+  <p><strong>O que é:</strong> controlar o acesso a propriedades e métodos.</p>
+  <p><strong>Por que usar:</strong> proteger dados internos da classe.</p>
+
+  <pre><code>class ContaBancaria {
+  #saldo; // propriedade privada (ES2022+)
+
+  constructor(titular, saldoInicial) {
+    this.titular = titular;
+    this.#saldo = saldoInicial;
+  }
+
+  depositar(valor) {
+    this.#saldo += valor;
+  }
+
+  getSaldo() {
+    return this.#saldo;
+  }
+}</code></pre>
+
+  <h4>Herança</h4>
+  <p><strong>O que é:</strong> criar classes baseadas em outras classes.</p>
+  <p><strong>Por que usar:</strong> reutilizar código e criar hierarquias.</p>
+
+  <pre><code>class Animal {
+  constructor(nome) {
+    this.nome = nome;
+  }
+
+  falar() {
+    return `${this.nome} faz um som`;
+  }
+}
+
+class Cachorro extends Animal {
+  falar() {
+    return `${this.nome} late: Au au!`;
+  }
+}
+
+const rex = new Cachorro("Rex");
+console.log(rex.falar());  // "Rex late: Au au!"</code></pre>
+</section>
+
+<section id="js-dom" class="topic">
+  <h3>DOM com JavaScript</h3>
+
+  <p><strong>O que é:</strong> interação com elementos da página (inputs, botões, etc.).</p>
+  <p><strong>Por que usar:</strong> criar páginas dinâmicas e interativas.</p>
+
+  <pre><code>// querySelector: busca elemento por seletor CSS (retorna Element ou null)
+const titulo = document.querySelector("h1");
+
+// Sempre checar se existe (pode ser null)
+if (titulo) {
+  // textContent: altera o texto dentro do elemento
+  titulo.textContent = "Título atualizado!";
+}
+
+// getElementById: busca por ID
+const inputNome = document.getElementById("nome");
+const botao = document.getElementById("btn");
+
+// addEventListener: adiciona evento de clique
+botao.addEventListener("click", () => {
+  // value: propriedade que contém o valor do input
+  alert(`Você digitou: ${inputNome.value}`);
+});</code></pre>
+
+  <p class="small-note">
+    Em projetos modernos, frameworks como React, Vue e Angular facilitam a manipulação do DOM.
+  </p>
+</section>
+
+<section id="js-modulos" class="topic">
+  <h3>Módulos e organização</h3>
+
+  <p><strong>O que é:</strong> dividir o código em arquivos com <code>export</code> e <code>import</code>.</p>
+  <p><strong>Por que usar:</strong> mantém o projeto organizado e evita variáveis globais.</p>
+
+  <pre><code>// ========== utils.js ==========
+// export: torna função/variável disponível para outros arquivos
+export function somar(a, b) {
+  return a + b;
+}
+
+export const PI = 3.14159;
+
+// ========== app.js ==========
+// import: traz funções/variáveis de outro arquivo
+import { somar, PI } from "./utils.js";
+
+console.log(somar(2, 3)); // 5
+console.log(PI);          // 3.14159</code></pre>
+</section>
+
+<section id="js-async" class="topic">
+  <h3>Promises e async/await</h3>
+
+  <p><strong>O que é:</strong> forma moderna de lidar com código assíncrono (que demora), como requisições a APIs.</p>
+  <p><strong>Por que usar:</strong> deixa o código muito mais legível do que cadeias grandes de <code>.then()</code>.</p>
+
+  <p><strong>Exemplo explicado:</strong></p>
+  <ul>
+    <li><code>function buscarDados()</code> – função que devolve uma promessa;</li>
+    <li><code>new Promise((resolve) => { ... })</code> – cria manualmente uma Promise;</li>
+    <li><code>setTimeout(..., 1000)</code> – simula uma operação demorada (1 segundo);</li>
+    <li><code>async function executar()</code> – função assíncrona que pode usar <code>await</code>;</li>
+    <li><code>await buscarDados()</code> – espera a Promise terminar e pega o resultado;</li>
+    <li><code>try / catch</code> – trata erros que podem acontecer durante a execução.</li>
+  </ul>
+
+  <pre><code>// Função que retorna uma Promise (operação assíncrona)
+function buscarDados() {
+  // new Promise: cria uma nova promessa
+  return new Promise((resolve) => {
+    // setTimeout: executa código depois de X milissegundos
+    setTimeout(() => {
+      // resolve: marca a promessa como concluída com sucesso
+      resolve("Dados recebidos!");
+    }, 1000); // espera 1 segundo (1000ms)
+  });
+}
+
+// async: permite usar await dentro da função
+async function executar() {
+  try {
+    // await: pausa execução até Promise completar
+    const resultado = await buscarDados();
+    console.log(resultado); // "Dados recebidos!"
+  } catch (erro) {
+    // catch: captura erros se algo der errado
+    console.error("Erro:", erro);
+  }
+}
+
+executar();</code></pre>
+
+  <h4>Exemplo com fetch (API)</h4>
+  <pre><code>async function carregarPosts() {
+  // fetch: faz requisição HTTP para buscar dados
+  const resposta = await fetch("https://jsonplaceholder.typicode.com/posts");
+
+  // .json(): converte resposta para objeto JavaScript
+  const posts = await resposta.json();
+
+  // slice(0, 5): pega apenas os 5 primeiros
+  // forEach: loop para cada item
+  posts.slice(0, 5).forEach((post) => {
+    console.log(post.title);
+  });
+}</code></pre>
+</section>
+
+<section id="js-erros" class="topic">
+  <h3>Tratamento de erros (try/catch)</h3>
+
+  <p><strong>O que é:</strong> mecanismo para capturar e tratar erros que podem acontecer durante a execução do código.</p>
+  <p><strong>Por que usar:</strong> previne que seu programa quebre completamente e permite lidar com situações inesperadas de forma controlada.</p>
+
+  <h4>Try/Catch básico</h4>
+  <p><strong>Explicação:</strong></p>
+  <ul>
+    <li><code>try { }</code> – bloco onde você coloca código que pode gerar erro;</li>
+    <li><code>catch (erro) { }</code> – bloco executado se algo der errado no try;</li>
+    <li><code>finally { }</code> – bloco que sempre executa, com ou sem erro.</li>
+  </ul>
+
+  <pre><code>function dividir(a, b) {
+  try {
+    // Código que pode gerar erro
+    if (b === 0) {
+      throw new Error("Não é possível dividir por zero!");
+    }
+    return a / b;
+  } catch (erro) {
+    // Captura o erro e trata
+    console.error("Erro ao dividir:", erro);
+    return 0;
+  } finally {
+    // Sempre executa (opcional)
+    console.log("Operação de divisão finalizada");
+  }
+}
+
+console.log(dividir(10, 2));  // 5
+console.log(dividir(10, 0));  // Erro capturado, retorna 0</code></pre>
+
+  <h4>Tipos de erros</h4>
+  <p><strong>O que é:</strong> JavaScript tem diferentes tipos de erros nativos.</p>
+
+  <pre><code>// Error genérico
+throw new Error("Algo deu errado");
+
+// TypeError - tipo incorreto
+throw new TypeError("Esperava um número");
+
+// RangeError - valor fora do alcance
+throw new RangeError("Número deve ser entre 0 e 100");
+
+// ReferenceError - variável não existe
+// (geralmente não se lança manualmente)
+
+// SyntaxError - erro de sintaxe
+// (geralmente não se lança manualmente)</code></pre>
+
+  <h4>Criando erros customizados</h4>
+  <p><strong>O que é:</strong> criar suas próprias classes de erro para situações específicas.</p>
+  <p><strong>Por que usar:</strong> facilita identificar e tratar diferentes tipos de problema.</p>
+
+  <pre><code>// Classe de erro customizada
+class ValidacaoError extends Error {
+  constructor(campo, mensagem) {
+    super(mensagem);
+    this.campo = campo;
+    this.name = "ValidacaoError";
+  }
+}
+
+class AutenticacaoError extends Error {
+  constructor(mensagem) {
+    super(mensagem);
+    this.name = "AutenticacaoError";
+  }
+}
+
+// Usando erros customizados
+function validarIdade(idade) {
+  if (idade < 0) {
+    throw new ValidacaoError("idade", "Idade não pode ser negativa");
+  }
+  if (idade < 18) {
+    throw new ValidacaoError("idade", "Você deve ter 18 anos ou mais");
+  }
+  return true;
+}
+
+try {
+  validarIdade(-5);
+} catch (erro) {
+  if (erro instanceof ValidacaoError) {
+    console.log(`Erro no campo ${erro.campo}: ${erro.message}`);
+  }
+}</code></pre>
+
+  <h4>Try/Catch com async/await</h4>
+  <p><strong>O que é:</strong> capturar erros em operações assíncronas.</p>
+  <p><strong>Por que usar:</strong> APIs podem falhar, conexões podem cair - sempre trate erros em operações assíncronas.</p>
+
+  <pre><code>async function buscarUsuario(id) {
+  try {
+    // Faz requisição à API
+    const resposta = await fetch(`https://api.exemplo.com/usuarios/${id}`);
+
+    // Verifica se a resposta foi bem-sucedida
+    if (!resposta.ok) {
+      throw new Error(`Erro HTTP: ${resposta.status}`);
+    }
+
+    // Converte para JSON
+    const dados = await resposta.json();
+    return dados;
+
+  } catch (erro) {
+    // Trata diferentes tipos de erro
+    if (erro instanceof TypeError) {
+      console.error("Erro de rede ou JSON inválido:", erro);
+    } else if (erro instanceof Error) {
+      console.error("Erro na requisição:", erro.message);
+    }
+    return null;
+  }
+}
+
+// Usando a função
+async function exibirUsuario(id) {
+  const usuario = await buscarUsuario(id);
+
+  if (usuario) {
+    console.log(`Usuário: ${usuario.nome}`);
+  } else {
+    console.log("Não foi possível carregar o usuário");
+  }
+}</code></pre>
+
+  <h4>Tratamento específico por tipo de erro</h4>
+  <pre><code>async function processarDados(url) {
+  try {
+    const resposta = await fetch(url);
+    const dados = await resposta.json();
+    return dados;
+
+  } catch (erro) {
+    // Verifica o tipo do erro e trata de forma diferente
+    if (erro instanceof TypeError) {
+      console.error("Erro de tipo ou rede:", erro.message);
+      // Pode tentar novamente ou usar cache
+    } else if (erro instanceof SyntaxError) {
+      console.error("JSON inválido:", erro.message);
+      // Retornar dados padrão
+    } else if (erro instanceof Error) {
+      console.error("Erro genérico:", erro.message);
+    } else {
+      // Erro desconhecido
+      console.error("Erro desconhecido:", erro);
+    }
+
+    throw erro; // Re-lança o erro se necessário
+  }
+}</code></pre>
+
+  <h4>Finally - limpeza de recursos</h4>
+  <p><strong>O que é:</strong> bloco que sempre executa, independente de erro ou sucesso.</p>
+  <p><strong>Por que usar:</strong> fechar conexões, limpar recursos, esconder loading, etc.</p>
+
+  <pre><code>async function carregarDados() {
+  const loading = document.getElementById("loading");
+
+  try {
+    // Mostra loading
+    if (loading) loading.style.display = "block";
+
+    const resposta = await fetch("https://api.exemplo.com/dados");
+    const dados = await resposta.json();
+
+    // Processa dados
+    console.log(dados);
+
+  } catch (erro) {
+    console.error("Erro ao carregar:", erro);
+
+  } finally {
+    // SEMPRE esconde o loading, com erro ou sem
+    if (loading) loading.style.display = "none";
+  }
+}</code></pre>
+
+  <h4>Boas práticas com try/catch</h4>
+  <ul>
+    <li>✅ Sempre trate erros em operações assíncronas (fetch, promises)</li>
+    <li>✅ Seja específico: capture apenas erros que você sabe tratar</li>
+    <li>✅ Use erros customizados para situações específicas do seu domínio</li>
+    <li>✅ Logue erros para debug, mas mostre mensagens amigáveis ao usuário</li>
+    <li>✅ Use <code>finally</code> para limpeza de recursos</li>
+    <li>❌ Não deixe blocos catch vazios - sempre faça algo com o erro</li>
+    <li>❌ Não use try/catch para controle de fluxo normal</li>
+    <li>❌ Não capture tudo sem necessidade - deixe erros críticos quebrarem</li>
+  </ul>
+
+  <h4>Exemplo completo com validação</h4>
+  <pre><code>class ErroValidacao extends Error {
+  constructor(erros) {
+    super("Erro de validação");
+    this.erros = erros;
+    this.name = "ErroValidacao";
+  }
+}
+
+function validarFormulario(dados) {
+  const erros = [];
+
+  if (!dados.nome || dados.nome.trim().length < 3) {
+    erros.push("Nome deve ter pelo menos 3 caracteres");
+  }
+
+  if (!dados.email || !dados.email.includes("@")) {
+    erros.push("Email inválido");
+  }
+
+  if (dados.idade < 18 || dados.idade > 120) {
+    erros.push("Idade deve estar entre 18 e 120 anos");
+  }
+
+  if (erros.length > 0) {
+    throw new ErroValidacao(erros);
+  }
+}
+
+async function salvarUsuario(dados) {
+  try {
+    // Valida os dados
+    validarFormulario(dados);
+
+    // Tenta salvar
+    const resposta = await fetch("https://api.exemplo.com/usuarios", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados)
+    });
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao salvar usuário");
+    }
+
+    console.log("Usuário salvo com sucesso!");
+
+  } catch (erro) {
+    if (erro instanceof ErroValidacao) {
+      // Mostra erros de validação ao usuário
+      console.log("Erros encontrados:");
+      erro.erros.forEach(e => console.log(`- ${e}`));
+    } else if (erro instanceof Error) {
+      // Erro de rede ou servidor
+      console.error("Erro ao salvar:", erro.message);
+    }
+  }
+}
+
+// Testando
+salvarUsuario({
+  nome: "Jo",
+  email: "invalido",
+  idade: 15
+});</code></pre>
+
+  <p class="small-note">
+    💡 <strong>Dica:</strong> Em produção, sempre registre erros em um serviço de monitoramento
+    (como Sentry, LogRocket) para identificar problemas que usuários encontram.
+  </p>
+</section>

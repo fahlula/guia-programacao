@@ -40,20 +40,29 @@ const indexData = {
     { id: "css-metodologias", label: "Metodologias (BEM, SMACSS)" },
     { id: "css-performance", label: "Performance e otimização" }
   ],
+  js: [
+    { id: "js-intro", label: "Introdução" },
+    { id: "js-variaveis", label: "Variáveis e Escopo" },
+    { id: "js-operadores", label: "Operadores" },
+    { id: "js-condicionais", label: "Estruturas Condicionais" },
+    { id: "js-loops", label: "Laços de Repetição (Loops)" },
+    { id: "js-estruturas-dados", label: "Estruturas de Dados" },
+    { id: "js-funcoes", label: "Funções" },
+    { id: "js-alta-ordem", label: "Funções de Alta Ordem" },
+    { id: "js-classes", label: "Classes e POO" },
+    { id: "js-dom", label: "DOM" },
+    { id: "js-modulos", label: "Módulos" },
+    { id: "js-async", label: "Promises e async/await" },
+    { id: "js-erros", label: "Tratamento de erros (try/catch)" }
+  ],
   ts: [
     { id: "ts-intro", label: "Introdução" },
     { id: "ts-tipos-basicos", label: "Tipos básicos" },
     { id: "ts-objetos-interfaces", label: "Objetos e interfaces" },
-    { id: "ts-funcoes", label: "Funções" },
-    { id: "ts-classes", label: "Classes e POO" },
     { id: "ts-generics", label: "Generics e avançado" },
     { id: "ts-type-guards", label: "Type Guards e Narrowing" },
     { id: "ts-utility-types", label: "Utility Types avançados" },
     { id: "ts-decorators", label: "Decorators" },
-    { id: "ts-dom", label: "DOM com TypeScript" },
-    { id: "ts-modulos", label: "Módulos" },
-    { id: "ts-async", label: "Promises e async/await" },
-    { id: "ts-erros", label: "Tratamento de erros (try/catch)" },
     { id: "ts-config", label: "tsconfig.json" },
     { id: "ts-boas-praticas", label: "Boas práticas" }
   ]
@@ -110,7 +119,7 @@ function bindIndexEvents() {
 }
 
 /**
- * Carrega o conteúdo HTML correspondente à categoria (html/css/ts)
+ * Carrega o conteúdo HTML correspondente à categoria (html/css/js/ts)
  */
 async function loadSection(section) {
   try {
@@ -124,6 +133,7 @@ async function loadSection(section) {
     // Define qual linguagem será usada para o destaque
     let lang = "markup";
     if (section === "css") lang = "css";
+    if (section === "js") lang = "javascript";
     if (section === "ts") lang = "typescript";
 
     // Ajusta classes de sintaxe
