@@ -114,10 +114,10 @@ Este projeto é open source e está disponível sob a licença MIT.
 
 ## 👩‍💻 Autora
 
-**Fabiana Lula**
+**Fabiana Almeida**
 
 - GitHub: [@fahlula](https://github.com/fahlula)
-- LinkedIn: [Seu LinkedIn aqui]
+- LinkedIn: [linkedin.com/in/fabiana-almeida-dev](https://www.linkedin.com/in/fabiana-almeida-dev)
 
 ---
 
