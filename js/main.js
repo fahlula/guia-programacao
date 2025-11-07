@@ -114,6 +114,9 @@ function bindIndexEvents() {
  */
 async function loadSection(section) {
   try {
+    // Marca como carregando para leitores de tela
+    contentDiv.setAttribute("aria-busy", "true");
+
     const response = await fetch(`content/${section}.html`);
     const html = await response.text();
     contentDiv.innerHTML = html;
@@ -139,8 +142,12 @@ async function loadSection(section) {
     renderIndex(section);
     bindIndexEvents();
 
+    // Marca como carregado
+    contentDiv.setAttribute("aria-busy", "false");
+
   } catch (err) {
     contentDiv.innerHTML = "<p>Erro ao carregar conteúdo. Verifique os arquivos.</p>";
+    contentDiv.setAttribute("aria-busy", "false");
     console.error("Erro ao carregar seção:", err);
   }
 }
@@ -171,8 +178,13 @@ buttons.forEach(btn => {
     const section = btn.dataset.section;
     currentSection = section;
 
-    buttons.forEach(b => b.classList.remove("active"));
+    // Atualiza estados visuais e de acessibilidade
+    buttons.forEach(b => {
+      b.classList.remove("active");
+      b.setAttribute("aria-pressed", "false");
+    });
     btn.classList.add("active");
+    btn.setAttribute("aria-pressed", "true");
 
     loadSection(section);
   });

@@ -5,9 +5,42 @@
   <meta charset="UTF-8" />
   <title>Super Guia Completo: HTML, CSS e TypeScript</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Guia completo e prático de HTML, CSS e TypeScript em português. Aprenda desenvolvimento web com explicações claras, exemplos práticos e dicas essenciais." />
+  <meta name="keywords" content="HTML, CSS, TypeScript, JavaScript, desenvolvimento web, programação, guia, tutorial, português, front-end, web development" />
+  <meta name="author" content="Fabiana Lula" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://fahlula.github.io/guia-programacao/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fahlula.github.io/guia-programacao/" />
+  <meta property="og:title" content="Super Guia Completo: HTML, CSS e TypeScript" />
+  <meta property="og:description" content="Guia completo e prático de HTML, CSS e TypeScript em português. Aprenda desenvolvimento web com explicações claras e exemplos práticos." />
+  <meta property="og:locale" content="pt_BR" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://fahlula.github.io/guia-programacao/" />
+  <meta property="twitter:title" content="Super Guia Completo: HTML, CSS e TypeScript" />
+  <meta property="twitter:description" content="Guia completo e prático de HTML, CSS e TypeScript em português. Aprenda desenvolvimento web com explicações claras e exemplos práticos." />
+
   <link rel="stylesheet" href="css/style.css" />
   <!-- Tema do Prism (código colorido) -->
   <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+  <!-- Google Analytics (Opcional - descomente e substitua G-XXXXXXXXXX pelo seu ID) -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  -->
+
   <script>
     /* Define o Prism como manual para ativar a coloração quando quisermos */
     window.Prism = window.Prism || {};
@@ -16,42 +49,42 @@
 </head>
 
 <body data-theme="dark">
-  <header>
+  <header role="banner">
     <h1>Super Guia Completo de HTML, CSS e TypeScript</h1>
     <p>Um guia completo e prático criado por estudante para estudantes! Aqui você encontra tudo que precisa saber sobre
       HTML, CSS e TypeScript em um só lugar, com explicações claras, exemplos práticos e dicas que realmente fazem diferença
       no seu aprendizado 😄</p>
 
     <div class="top-bar">
-      <div class="buttons-group">
+      <nav class="buttons-group" aria-label="Navegação principal por categoria">
         <!-- Botões principais de categoria -->
-        <button class="btn active" data-section="html">HTML</button>
-        <button class="btn" data-section="css">CSS</button>
-        <button class="btn" data-section="ts">TypeScript</button>
-      </div>
+        <button class="btn active" data-section="html" aria-label="Ver conteúdo de HTML" aria-pressed="true">HTML</button>
+        <button class="btn" data-section="css" aria-label="Ver conteúdo de CSS" aria-pressed="false">CSS</button>
+        <button class="btn" data-section="ts" aria-label="Ver conteúdo de TypeScript" aria-pressed="false">TypeScript</button>
+      </nav>
 
       <!-- Alternância de tema -->
-      <button class="btn btn-outline theme-toggle" id="themeToggle">
+      <button class="btn btn-outline theme-toggle" id="themeToggle" aria-label="Alternar entre tema claro e escuro">
         ☀️ Modo claro
       </button>
     </div>
   </header>
 
-  <main class="layout">
+  <main class="layout" role="main">
     <!-- Índice lateral será preenchido dinamicamente via JS -->
-    <nav class="side-index" id="sideIndex"></nav>
+    <nav class="side-index" id="sideIndex" aria-label="Índice de tópicos"></nav>
 
-    <section class="content-area">
+    <section class="content-area" aria-label="Conteúdo principal">
       <p class="categories-info">
         Use este guia como um livro: escolha a categoria, navegue pelo índice lateral e leia as explicações com calma.
       </p>
 
       <!-- Aqui entra o conteúdo carregado dinamicamente -->
-      <div id="content">Carregando conteúdo...</div>
+      <div id="content" aria-live="polite" aria-busy="false">Carregando conteúdo...</div>
     </section>
   </main>
 
-  <footer>
+  <footer role="contentinfo">
     Feito para você estudar e consultar sempre que precisar 💙<br />
     Dica: deixe este arquivo aberto enquanto programa e vá adicionando seus próprios exemplos.
   </footer>
