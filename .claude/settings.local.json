@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(del .gitignore README.md LICENSE)"
-    ],
-    "deny": [],
-    "ask": []
-  }
-}
