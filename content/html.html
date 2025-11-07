@@ -1,0 +1,748 @@
+<section id="html-intro" class="topic active">
+  <h2>🏷️ HTML — Estrutura, Formulários, Mídia e Semântica</h2>
+  <div class="mini-index">
+    <strong>Nesta seção você encontra:</strong>
+    Estrutura básica · Tags comuns · HTML semântico · Listas e tabelas · Formulários (básico e avançado) · 
+    Atributos importantes · Mídia (vídeo, áudio, iframe, canvas) · SEO e acessibilidade.
+  </div>
+</section>
+
+<section id="html-basico" class="topic">
+  <h3>Estrutura básica</h3>
+  <p><strong>O que é:</strong> a base de qualquer página HTML, com declaração de tipo, idioma, cabeçalho e corpo.</p>
+  <p><strong>Por que usar:</strong> garante compatibilidade com navegadores, boa leitura por ferramentas e organização do documento.</p>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Título da página&lt;/title&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Olá, mundo!&lt;/h1&gt;
+    &lt;p&gt;Meu primeiro parágrafo.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+  <ul>
+    <li><code>&lt;!DOCTYPE html&gt;</code> – indica que o documento é HTML5;</li>
+    <li><code>&lt;html lang="pt-BR"&gt;</code> – raiz do documento, com idioma;</li>
+    <li><code>&lt;head&gt;</code> – informações da página (não aparecem visíveis);</li>
+    <li><code>&lt;body&gt;</code> – tudo o que o usuário vê na tela.</li>
+  </ul>
+</section>
+
+<section id="html-tags-comuns" class="topic">
+  <h3>Tags mais usadas</h3>
+  <h4>Títulos e textos</h4>
+  <p><strong>O que é:</strong> conjunto de tags para criar títulos e parágrafos.</p>
+  <p><strong>Por que usar:</strong> ajudam a organizar o conteúdo, melhorar SEO e acessibilidade.</p>
+  <pre><code>&lt;h1&gt;Título principal&lt;/h1&gt;
+&lt;h2&gt;Subtítulo&lt;/h2&gt;
+&lt;p&gt;Um parágrafo de texto com &lt;strong&gt;destaque&lt;/strong&gt; e &lt;em&gt;ênfase&lt;/em&gt;.&lt;/p&gt;
+</code></pre>
+
+  <h4>Links e imagens</h4>
+  <p><strong>O que é:</strong> forma de criar navegação e ilustrar o conteúdo.</p>
+  <p><strong>Por que usar:</strong> links conectam páginas e imagens enriquecem a experiência do usuário.</p>
+  <pre><code>&lt;a href="https://site.com" target="_blank"&gt;Ir para o site&lt;/a&gt;
+&lt;img src="foto.jpg" alt="Descrição da foto"&gt;
+</code></pre>
+
+  <h4>Divisões</h4>
+  <p><strong>O que é:</strong> elementos genéricos para agrupar conteúdo.</p>
+  <p><strong>Por que usar:</strong> facilitam layout e aplicação de estilos com CSS.</p>
+  <pre><code>&lt;div class="card"&gt;
+  &lt;h2&gt;Título&lt;/h2&gt;
+  &lt;p&gt;Conteúdo dentro da div.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Texto com um &lt;span class="destaque"&gt;trecho em destaque&lt;/span&gt;.&lt;/p&gt;
+</code></pre>
+</section>
+
+<section id="html-semantico" class="topic">
+  <h3>HTML semântico</h3>
+  <p><strong>O que é:</strong> uso de tags que descrevem o SIGNIFICADO do conteúdo, não apenas sua aparência. Em vez de usar apenas &lt;div&gt; para tudo, você usa tags específicas como &lt;header&gt;, &lt;nav&gt;, &lt;article&gt;, &lt;footer&gt; etc.</p>
+
+  <p><strong>Por que usar:</strong></p>
+  <ul>
+    <li><strong>Acessibilidade:</strong> leitores de tela entendem melhor a estrutura e navegam mais facilmente</li>
+    <li><strong>SEO:</strong> Google e outros buscadores identificam melhor o conteúdo importante</li>
+    <li><strong>Manutenção:</strong> código mais fácil de entender e modificar</li>
+    <li><strong>Organização:</strong> estrutura clara da página sem precisar ler CSS</li>
+  </ul>
+
+  <h4>Tags semânticas principais</h4>
+  <pre><code>&lt;!-- HEADER: cabeçalho do site ou seção --&gt;
+&lt;header&gt;
+  &lt;h1&gt;Meu Blog de Tecnologia&lt;/h1&gt;
+  &lt;p&gt;Artigos sobre desenvolvimento web&lt;/p&gt;
+
+  &lt;!-- NAV: menu de navegação principal --&gt;
+  &lt;nav&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#posts"&gt;Posts&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#sobre"&gt;Sobre&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;!-- MAIN: conteúdo principal da página (só pode ter 1 por página!) --&gt;
+&lt;main&gt;
+
+  &lt;!-- ARTICLE: conteúdo independente que faz sentido sozinho --&gt;
+  &lt;article&gt;
+    &lt;header&gt;
+      &lt;h2&gt;Como aprender HTML em 2025&lt;/h2&gt;
+      &lt;p&gt;Publicado em &lt;time datetime="2025-01-15"&gt;15 de janeiro de 2025&lt;/time&gt;&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;!-- SECTION: seção temática dentro do artigo --&gt;
+    &lt;section&gt;
+      &lt;h3&gt;Introdução&lt;/h3&gt;
+      &lt;p&gt;HTML é a base de toda página web...&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section&gt;
+      &lt;h3&gt;Recursos recomendados&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li&gt;MDN Web Docs&lt;/li&gt;
+        &lt;li&gt;W3Schools&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/section&gt;
+
+    &lt;footer&gt;
+      &lt;p&gt;Tags: HTML, Iniciantes, Tutorial&lt;/p&gt;
+    &lt;/footer&gt;
+  &lt;/article&gt;
+
+  &lt;!-- ASIDE: conteúdo relacionado mas não essencial --&gt;
+  &lt;aside&gt;
+    &lt;h3&gt;Posts relacionados&lt;/h3&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="#post2"&gt;CSS para iniciantes&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#post3"&gt;JavaScript básico&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/aside&gt;
+
+&lt;/main&gt;
+
+&lt;!-- FOOTER: rodapé com informações secundárias --&gt;
+&lt;footer&gt;
+  &lt;p&gt;© 2025 - Meu Blog. Todos os direitos reservados.&lt;/p&gt;
+  &lt;nav&gt;
+    &lt;a href="#privacidade"&gt;Privacidade&lt;/a&gt;
+    &lt;a href="#termos"&gt;Termos de uso&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/footer&gt;
+</code></pre>
+
+  <h4>Diferença entre tags semânticas</h4>
+  <ul>
+    <li><strong>&lt;article&gt;</strong> - Conteúdo que faz sentido sozinho (post de blog, notícia, comentário)</li>
+    <li><strong>&lt;section&gt;</strong> - Seção temática dentro de algo maior (capítulo de artigo)</li>
+    <li><strong>&lt;aside&gt;</strong> - Conteúdo relacionado mas não essencial (barra lateral, widgets)</li>
+    <li><strong>&lt;header&gt;</strong> - Cabeçalho (pode ter vários na página)</li>
+    <li><strong>&lt;footer&gt;</strong> - Rodapé (pode ter vários na página)</li>
+    <li><strong>&lt;nav&gt;</strong> - Menu de navegação (principal ou secundário)</li>
+    <li><strong>&lt;main&gt;</strong> - Conteúdo principal único da página</li>
+  </ul>
+
+  <p class="small-note">
+    <strong>Dica:</strong> Use &lt;div&gt; apenas quando não houver uma tag semântica apropriada. &lt;div&gt; é genérico e não transmite significado.
+  </p>
+</section>
+
+<section id="html-listas-tabelas" class="topic">
+  <h3>Listas e tabelas</h3>
+
+  <h4>Listas</h4>
+  <p><strong>O que é:</strong> coleção de itens em sequência.</p>
+  <p><strong>Por que usar:</strong> ideal para menus, passos de tutorial, conjuntos de itens.</p>
+  <pre><code>&lt;ul&gt;
+  &lt;li&gt;HTML&lt;/li&gt;
+  &lt;li&gt;CSS&lt;/li&gt;
+  &lt;li&gt;TypeScript&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Estudar base&lt;/li&gt;
+  &lt;li&gt;Fazer projetos&lt;/li&gt;
+  &lt;li&gt;Publicar no GitHub&lt;/li&gt;
+&lt;/ol&gt;
+</code></pre>
+
+  <h4>Tabelas</h4>
+  <p><strong>O que é:</strong> estrutura para dados tabulares (linhas e colunas).</p>
+  <p><strong>Por que usar:</strong> ótima para relatórios, comparações e exibição de dados estruturados.</p>
+  <pre><code>&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Nome&lt;/th&gt;
+      &lt;th&gt;Idade&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ana&lt;/td&gt;
+      &lt;td&gt;20&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</code></pre>
+</section>
+
+<section id="html-formularios" class="topic">
+  <h3>Formulários</h3>
+  <p><strong>O que é:</strong> conjunto de campos para o usuário enviar dados.</p>
+  <p><strong>Por que usar:</strong> essencial para login, cadastro, contato, comentários etc.</p>
+  <pre><code>&lt;form action="/enviar" method="POST"&gt;
+  &lt;label for="nome"&gt;Nome:&lt;/label&gt;
+  &lt;input id="nome" name="nome" type="text" required&gt;
+
+  &lt;label for="email"&gt;E-mail:&lt;/label&gt;
+  &lt;input id="email" name="email" type="email" required&gt;
+
+  &lt;label for="mensagem"&gt;Mensagem:&lt;/label&gt;
+  &lt;textarea id="mensagem" name="mensagem"&gt;&lt;/textarea&gt;
+
+  &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+
+  <h4>Formulários avançados (HTML5)</h4>
+  <p><strong>O que é:</strong> inputs com tipos mais específicos, que ajudam na validação.</p>
+  <p><strong>Por que usar:</strong> melhor experiência para o usuário e menos validação manual no JS.</p>
+  <pre><code>&lt;form&gt;
+  &lt;label&gt;Data de nascimento:
+    &lt;input type="date" name="nascimento"&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;Número:
+    &lt;input type="number" name="quantidade" min="1" max="10"&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;Range:
+    &lt;input type="range" name="nivel" min="0" max="100" step="10"&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;Cor favorita:
+    &lt;input type="color" name="cor"&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;Telefone:
+    &lt;input type="tel" name="telefone" pattern="\d{11}" placeholder="11999999999"&gt;
+  &lt;/label&gt;
+
+  &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+  <p class="small-note">
+    Outros tipos úteis: <code>url</code>, <code>search</code>, <code>time</code>, <code>datetime-local</code>, <code>file</code>.
+  </p>
+</section>
+
+<section id="html-atributos" class="topic">
+  <h3>Atributos importantes</h3>
+  <p><strong>O que é:</strong> propriedades extras que você adiciona nas tags HTML para mudar seu comportamento, aparência ou fornecer informações adicionais. São escritos dentro da tag de abertura.</p>
+
+  <p><strong>Por que usar:</strong> permitem identificar elementos, aplicar estilos CSS, adicionar interatividade JavaScript, melhorar acessibilidade e muito mais.</p>
+
+  <h4>Atributos globais (funcionam em qualquer tag)</h4>
+
+  <p><strong>1. id - Identificador único</strong></p>
+  <pre><code>&lt;div id="meu-container"&gt;...&lt;/div&gt;
+
+&lt;!-- IMPORTANTE: --&gt;
+&lt;!-- - Só pode haver UM elemento com cada id na página --&gt;
+&lt;!-- - Use para JavaScript (getElementById) e CSS (#meu-container) --&gt;
+&lt;!-- - Prefira classes para estilização, id para funcionalidade --&gt;
+</code></pre>
+
+  <p><strong>2. class - Classes CSS</strong></p>
+  <pre><code>&lt;button class="btn btn-primary btn-large"&gt;Clique aqui&lt;/button&gt;
+
+&lt;!-- IMPORTANTE: --&gt;
+&lt;!-- - Pode ter várias classes separadas por espaço --&gt;
+&lt;!-- - Mesmo class pode ser usado em vários elementos --&gt;
+&lt;!-- - Principal forma de aplicar estilos CSS --&gt;
+</code></pre>
+
+  <p><strong>3. style - CSS inline (evite quando possível)</strong></p>
+  <pre><code>&lt;p style="color: red; font-size: 18px;"&gt;Texto vermelho&lt;/p&gt;
+
+&lt;!-- CUIDADO: --&gt;
+&lt;!-- - Mistura conteúdo com apresentação --&gt;
+&lt;!-- - Dificulta manutenção --&gt;
+&lt;!-- - Use apenas para testes rápidos --&gt;
+</code></pre>
+
+  <p><strong>4. title - Tooltip ao passar mouse</strong></p>
+  <pre><code>&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt;
+&lt;button title="Salvar todas as alterações"&gt;Salvar&lt;/button&gt;
+</code></pre>
+
+  <p><strong>5. data-* - Dados customizados</strong></p>
+  <pre><code>&lt;article
+  data-post-id="123"
+  data-category="tecnologia"
+  data-autor="João Silva"
+&gt;
+  Conteúdo do artigo...
+&lt;/article&gt;
+
+&lt;script&gt;
+  // Acessar no JavaScript:
+  const article = document.querySelector("article");
+  console.log(article.dataset.postId);     // "123"
+  console.log(article.dataset.category);    // "tecnologia"
+&lt;/script&gt;
+
+&lt;!-- QUANDO USAR: --&gt;
+&lt;!-- - Armazenar dados que serão usados por JavaScript --&gt;
+&lt;!-- - Passar informações do backend para o frontend --&gt;
+&lt;!-- - Evita poluir com atributos não-padrão --&gt;
+</code></pre>
+
+  <h4>Atributos de acessibilidade (ARIA)</h4>
+  <pre><code>&lt;button
+  aria-label="Fechar janela"
+  aria-pressed="false"
+  aria-describedby="ajuda-fechar"
+&gt;
+  ✕
+&lt;/button&gt;
+&lt;span id="ajuda-fechar"&gt;Pressione para fechar a janela&lt;/span&gt;
+
+&lt;!-- Atributos ARIA comuns: --&gt;
+&lt;!-- aria-label: rótulo para leitores de tela --&gt;
+&lt;!-- aria-hidden: esconde de leitores de tela --&gt;
+&lt;!-- aria-live: anuncia mudanças dinâmicas --&gt;
+&lt;!-- aria-pressed: indica botão pressionado (toggle) --&gt;
+&lt;!-- aria-expanded: indica se está expandido (accordion) --&gt;
+&lt;!-- aria-describedby: referencia descrição detalhada --&gt;
+</code></pre>
+
+  <h4>Atributos específicos por elemento</h4>
+  <pre><code>&lt;!-- LINKS --&gt;
+&lt;a href="https://site.com" target="_blank" rel="noopener noreferrer"&gt;
+  Link externo
+&lt;/a&gt;
+&lt;!-- href: destino do link --&gt;
+&lt;!-- target="_blank": abre em nova aba --&gt;
+&lt;!-- rel="noopener noreferrer": segurança ao abrir em nova aba --&gt;
+
+&lt;!-- IMAGENS --&gt;
+&lt;img
+  src="foto.jpg"
+  alt="Descrição da foto para acessibilidade"
+  width="800"
+  height="600"
+  loading="lazy"
+&gt;
+&lt;!-- src: caminho da imagem --&gt;
+&lt;!-- alt: texto alternativo (OBRIGATÓRIO para acessibilidade!) --&gt;
+&lt;!-- width/height: dimensões (melhora performance) --&gt;
+&lt;!-- loading="lazy": carrega apenas quando visível --&gt;
+
+&lt;!-- INPUTS --&gt;
+&lt;input
+  type="email"
+  name="email"
+  id="email"
+  placeholder="seu@email.com"
+  required
+  autocomplete="email"
+&gt;
+&lt;!-- type: tipo de dado (email, password, number, etc) --&gt;
+&lt;!-- name: nome enviado ao servidor --&gt;
+&lt;!-- placeholder: dica visual dentro do campo --&gt;
+&lt;!-- required: campo obrigatório --&gt;
+&lt;!-- autocomplete: ativa preenchimento automático --&gt;
+
+&lt;!-- BOTÕES --&gt;
+&lt;button type="submit" disabled&gt;Enviar&lt;/button&gt;
+&lt;button type="button" onclick="alert('Clicou!')"&gt;Clique&lt;/button&gt;
+&lt;!-- type="submit": envia formulário (padrão) --&gt;
+&lt;!-- type="button": botão normal, não envia formulário --&gt;
+&lt;!-- disabled: desabilita o botão --&gt;
+</code></pre>
+
+  <h4>Exemplo completo com vários atributos</h4>
+  <pre><code>&lt;button
+  id="btn-comprar"
+  class="btn btn-primary"
+  type="button"
+  data-produto-id="42"
+  data-preco="99.90"
+  aria-label="Adicionar produto ao carrinho"
+  title="Clique para comprar este produto"
+  onclick="adicionarAoCarrinho(42)"
+&gt;
+  🛒 Comprar por R$ 99,90
+&lt;/button&gt;
+</code></pre>
+
+  <p class="small-note">
+    <strong>Dica:</strong> Use a ferramenta de inspeção do navegador (F12) para ver todos os atributos de qualquer elemento em sites reais!
+  </p>
+</section>
+
+<section id="html-midia" class="topic">
+  <h3>Mídia e elementos avançados</h3>
+
+  <h4>Vídeo e áudio</h4>
+  <p><strong>O que é:</strong> tags específicas para mídia.</p>
+  <p><strong>Por que usar:</strong> adicionam interação e riqueza ao conteúdo.</p>
+  <pre><code>&lt;video controls width="400"&gt;
+  &lt;source src="video.mp4" type="video/mp4"&gt;
+  Seu navegador não suporta vídeo.
+&lt;/video&gt;
+
+&lt;audio controls&gt;
+  &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+  Seu navegador não suporta áudio.
+&lt;/audio&gt;
+</code></pre>
+
+  <h4>Iframe (embutir páginas externas, mapas, vídeos etc.)</h4>
+  <p><strong>O que é:</strong> uma janela para outra página dentro da sua.</p>
+  <p><strong>Por que usar:</strong> permite incorporar vídeos, mapas, widgets de terceiros.</p>
+  <pre><code>&lt;iframe
+  src="https://www.youtube.com/embed/ID_DO_VIDEO"
+  width="560"
+  height="315"
+  title="Vídeo do YouTube"
+  frameborder="0"
+  allowfullscreen
+&gt;&lt;/iframe&gt;
+</code></pre>
+
+  <h4>Canvas (desenho via JavaScript)</h4>
+  <p><strong>O que é:</strong> área de desenho controlada por scripts.</p>
+  <p><strong>Por que usar:</strong> ideal para gráficos, jogos simples, animações customizadas.</p>
+  <pre><code>&lt;canvas id="meuCanvas" width="300" height="150"&gt;&lt;/canvas&gt;
+
+&lt;script&gt;
+  // getElementById: busca elemento pelo ID (atributo id="meuCanvas")
+  const canvas = document.getElementById("meuCanvas");
+
+  // getContext: pega o "contexto" para desenhar (2d ou 3d/webgl)
+  const ctx = canvas.getContext("2d");
+
+  // fillStyle: define a cor de preenchimento
+  ctx.fillStyle = "red";
+
+  // fillRect: desenha um retângulo preenchido (x, y, largura, altura)
+  ctx.fillRect(10, 10, 100, 50);
+&lt;/script&gt;
+</code></pre>
+</section>
+
+<section id="html-meta-tags" class="topic">
+  <h3>Meta tags e Open Graph</h3>
+  <p><strong>O que é:</strong> meta tags são informações adicionais no &lt;head&gt; para SEO, redes sociais e navegadores.</p>
+  <p><strong>Por que usar:</strong> controla como seu site aparece no Google, Facebook, Twitter e outros.</p>
+
+  <h4>Meta tags essenciais</h4>
+  <pre><code>&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;meta name="description" content="Descrição concisa da página (150-160 caracteres)"&gt;
+  &lt;meta name="keywords" content="html, css, typescript, guia"&gt;
+  &lt;meta name="author" content="Seu Nome"&gt;
+
+  &lt;!-- Favicon --&gt;
+  &lt;link rel="icon" type="image/png" href="/favicon.png"&gt;
+&lt;/head&gt;</code></pre>
+
+  <h4>Open Graph (Facebook, LinkedIn, WhatsApp)</h4>
+  <p><strong>O que é:</strong> protocolo que controla como links aparecem quando compartilhados.</p>
+  <pre><code>&lt;head&gt;
+  &lt;meta property="og:title" content="Título do site"&gt;
+  &lt;meta property="og:description" content="Descrição para redes sociais"&gt;
+  &lt;meta property="og:image" content="https://seusite.com/imagem.jpg"&gt;
+  &lt;meta property="og:url" content="https://seusite.com"&gt;
+  &lt;meta property="og:type" content="website"&gt;
+
+  &lt;!-- Twitter Cards --&gt;
+  &lt;meta name="twitter:card" content="summary_large_image"&gt;
+  &lt;meta name="twitter:title" content="Título do site"&gt;
+  &lt;meta name="twitter:description" content="Descrição"&gt;
+  &lt;meta name="twitter:image" content="https://seusite.com/imagem.jpg"&gt;
+&lt;/head&gt;</code></pre>
+</section>
+
+<section id="html-apis" class="topic">
+  <h3>Web APIs (Storage, Geolocation)</h3>
+
+  <h4>Local Storage e Session Storage</h4>
+  <p><strong>O que é:</strong> forma de armazenar dados no navegador do usuário.</p>
+  <p><strong>Por que usar:</strong> salvar preferências, carrinho de compras, tema, etc sem banco de dados.</p>
+  <pre><code>&lt;script&gt;
+  // LocalStorage - persiste mesmo após fechar o navegador
+
+  // setItem: salva um valor (chave, valor)
+  localStorage.setItem("tema", "dark");
+
+  // getItem: recupera um valor pela chave
+  const tema = localStorage.getItem("tema");
+
+  // removeItem: remove um item específico
+  localStorage.removeItem("tema");
+
+  // clear: limpa TUDO do localStorage
+  localStorage.clear();
+
+  // SessionStorage - só dura enquanto a aba estiver aberta
+  sessionStorage.setItem("token", "abc123");
+  const token = sessionStorage.getItem("token");
+
+  // Armazenar objetos (precisa converter para string)
+  const usuario = { nome: "Ana", idade: 25 };
+
+  // JSON.stringify: transforma objeto em texto
+  localStorage.setItem("usuario", JSON.stringify(usuario));
+
+  // JSON.parse: transforma texto de volta em objeto
+  const usuarioSalvo = JSON.parse(localStorage.getItem("usuario"));
+&lt;/script&gt;</code></pre>
+
+  <h4>Geolocation API</h4>
+  <p><strong>O que é:</strong> API para obter localização do usuário (latitude/longitude).</p>
+  <p><strong>Por que usar:</strong> mapas, entregas, buscar lojas próximas, clima local.</p>
+  <pre><code>&lt;button id="btnLocalizar"&gt;Obter minha localização&lt;/button&gt;
+&lt;p id="resultado"&gt;&lt;/p&gt;
+
+&lt;script&gt;
+  // getElementById: busca o botão pelo ID
+  // addEventListener: adiciona evento de clique no botão
+  document.getElementById("btnLocalizar").addEventListener("click", () =&gt; {
+
+    // navigator.geolocation: API de localização do navegador
+    if (navigator.geolocation) {
+
+      // getCurrentPosition: pega posição atual do usuário
+      // Recebe 2 funções: sucesso e erro
+      navigator.geolocation.getCurrentPosition(
+        // Função executada quando obtém localização com sucesso
+        (position) =&gt; {
+          const lat = position.coords.latitude;  // pega latitude
+          const lon = position.coords.longitude; // pega longitude
+
+          // textContent: altera o texto dentro do elemento
+          document.getElementById("resultado").textContent =
+            `Latitude: ${lat}, Longitude: ${lon}`;
+        },
+        // Função executada se der erro
+        (error) =&gt; {
+          console.error("Erro ao obter localização:", error);
+        }
+      );
+    } else {
+      alert("Geolocalização não suportada");
+    }
+  });
+&lt;/script&gt;</code></pre>
+
+  <h4>Drag and Drop API</h4>
+  <p><strong>O que é:</strong> permite arrastar e soltar elementos na página.</p>
+  <p><strong>Por que usar:</strong> reordenar listas, upload de arquivos, interfaces interativas.</p>
+  <pre><code>&lt;div id="arrastar" draggable="true"&gt;Arraste-me&lt;/div&gt;
+&lt;div id="area-soltar" style="width:200px;height:200px;border:2px dashed #ccc;"&gt;
+  Solte aqui
+&lt;/div&gt;
+
+&lt;script&gt;
+  // Busca os elementos pelo ID
+  const elemento = document.getElementById("arrastar");
+  const area = document.getElementById("area-soltar");
+
+  // dragstart: evento quando começa a arrastar
+  elemento.addEventListener("dragstart", (e) =&gt; {
+    // setData: guarda informação sobre o que está sendo arrastado
+    e.dataTransfer.setData("text", e.target.id);
+  });
+
+  // dragover: evento enquanto arrasta sobre a área
+  area.addEventListener("dragover", (e) =&gt; {
+    // preventDefault: cancela comportamento padrão (necessário!)
+    e.preventDefault();
+  });
+
+  // drop: evento quando solta o elemento
+  area.addEventListener("drop", (e) =&gt; {
+    e.preventDefault();
+
+    // getData: recupera informação salva no dragstart
+    const id = e.dataTransfer.getData("text");
+
+    // appendChild: adiciona elemento como filho da área
+    area.appendChild(document.getElementById(id));
+  });
+&lt;/script&gt;</code></pre>
+</section>
+
+<section id="html-svg" class="topic">
+  <h3>SVG básico</h3>
+  <p><strong>O que é:</strong> formato de imagem vetorial (escala sem perder qualidade) que pode ser embutido direto no HTML.</p>
+  <p><strong>Por que usar:</strong> ícones, logos, gráficos, animações - tudo com qualidade perfeita em qualquer tamanho.</p>
+
+  <h4>SVG inline</h4>
+  <pre><code>&lt;svg width="100" height="100" viewBox="0 0 100 100"&gt;
+  &lt;!-- Círculo --&gt;
+  &lt;circle cx="50" cy="50" r="40" fill="blue" /&gt;
+
+  &lt;!-- Retângulo --&gt;
+  &lt;rect x="10" y="10" width="30" height="30" fill="red" /&gt;
+
+  &lt;!-- Linha --&gt;
+  &lt;line x1="0" y1="0" x2="100" y2="100" stroke="black" stroke-width="2" /&gt;
+
+  &lt;!-- Polígono (estrela) --&gt;
+  &lt;polygon points="50,15 61,40 85,40 66,55 73,78 50,65 27,78 34,55 15,40 39,40"
+           fill="gold" /&gt;
+&lt;/svg&gt;</code></pre>
+
+  <h4>SVG com CSS e JavaScript</h4>
+  <p><strong>O que é:</strong> SVGs podem ser estilizados e animados como HTML normal.</p>
+  <pre><code>&lt;svg width="100" height="100"&gt;
+  &lt;circle id="circulo" cx="50" cy="50" r="40" fill="blue" /&gt;
+&lt;/svg&gt;
+
+&lt;style&gt;
+  #circulo {
+    transition: fill 0.3s;
+  }
+  #circulo:hover {
+    fill: red;
+    cursor: pointer;
+  }
+&lt;/style&gt;
+
+&lt;script&gt;
+  // Busca o círculo SVG pelo ID e adiciona evento de clique
+  document.getElementById("circulo").addEventListener("click", () =&gt; {
+    // alert: mostra caixa de mensagem popup
+    alert("Círculo clicado!");
+  });
+&lt;/script&gt;</code></pre>
+
+  <h4>Path (caminho)</h4>
+  <p><strong>O que é:</strong> permite criar formas complexas com comandos de desenho.</p>
+  <pre><code>&lt;svg width="200" height="200"&gt;
+  &lt;path d="M 10 10 L 100 10 L 100 100 Z" fill="green" /&gt;
+  &lt;!-- M = move to, L = line to, Z = close path --&gt;
+&lt;/svg&gt;</code></pre>
+  <p class="small-note">
+    Para SVGs complexos, use ferramentas como Figma, Illustrator ou Inkscape e exporte o código.
+  </p>
+</section>
+
+<section id="html-seo-acessibilidade" class="topic">
+  <h3>SEO e acessibilidade (básico)</h3>
+  <p><strong>O que é:</strong> conjunto de práticas para que buscadores e pessoas (inclusive com deficiência) usem bem seu site.</p>
+  <p><strong>Por que usar:</strong> melhora posicionamento no Google e torna o site utilizável para mais gente.</p>
+  <pre><code>&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Título da página&lt;/title&gt;
+  &lt;meta name="description" content="Descrição da página para SEO"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;/head&gt;
+</code></pre>
+  <p class="small-note">
+    Acessibilidade mais avançada usa <code>aria-*</code>, foco bem definido (<code>tabindex</code>) e testes com leitores de tela.
+  </p>
+
+  <h4>Referência rápida: Funções JavaScript/DOM</h4>
+  <p><strong>O que é:</strong> lista das funções mais usadas para manipular a página.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Função</th>
+        <th>O que faz</th>
+        <th>Exemplo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>getElementById()</code></td>
+        <td>Busca elemento pelo ID</td>
+        <td><code>document.getElementById("menu")</code></td>
+      </tr>
+      <tr>
+        <td><code>querySelector()</code></td>
+        <td>Busca elemento por seletor CSS</td>
+        <td><code>document.querySelector(".btn")</code></td>
+      </tr>
+      <tr>
+        <td><code>querySelectorAll()</code></td>
+        <td>Busca TODOS elementos por seletor</td>
+        <td><code>document.querySelectorAll("p")</code></td>
+      </tr>
+      <tr>
+        <td><code>addEventListener()</code></td>
+        <td>Adiciona evento (click, hover, etc)</td>
+        <td><code>btn.addEventListener("click", fn)</code></td>
+      </tr>
+      <tr>
+        <td><code>textContent</code></td>
+        <td>Altera/lê texto de elemento</td>
+        <td><code>titulo.textContent = "Novo"</code></td>
+      </tr>
+      <tr>
+        <td><code>innerHTML</code></td>
+        <td>Altera/lê HTML interno</td>
+        <td><code>div.innerHTML = "&lt;p&gt;Oi&lt;/p&gt;"</code></td>
+      </tr>
+      <tr>
+        <td><code>appendChild()</code></td>
+        <td>Adiciona elemento filho</td>
+        <td><code>pai.appendChild(filho)</code></td>
+      </tr>
+      <tr>
+        <td><code>classList.add()</code></td>
+        <td>Adiciona classe CSS</td>
+        <td><code>el.classList.add("active")</code></td>
+      </tr>
+      <tr>
+        <td><code>classList.remove()</code></td>
+        <td>Remove classe CSS</td>
+        <td><code>el.classList.remove("active")</code></td>
+      </tr>
+      <tr>
+        <td><code>classList.toggle()</code></td>
+        <td>Alterna classe (add/remove)</td>
+        <td><code>el.classList.toggle("show")</code></td>
+      </tr>
+      <tr>
+        <td><code>setAttribute()</code></td>
+        <td>Define atributo</td>
+        <td><code>img.setAttribute("src", "foto.jpg")</code></td>
+      </tr>
+      <tr>
+        <td><code>getAttribute()</code></td>
+        <td>Pega valor de atributo</td>
+        <td><code>img.getAttribute("alt")</code></td>
+      </tr>
+      <tr>
+        <td><code>style.propriedade</code></td>
+        <td>Altera CSS inline</td>
+        <td><code>el.style.color = "red"</code></td>
+      </tr>
+      <tr>
+        <td><code>preventDefault()</code></td>
+        <td>Cancela comportamento padrão</td>
+        <td><code>e.preventDefault()</code></td>
+      </tr>
+      <tr>
+        <td><code>console.log()</code></td>
+        <td>Mostra mensagem no console</td>
+        <td><code>console.log("teste")</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>

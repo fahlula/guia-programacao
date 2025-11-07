@@ -1,0 +1,839 @@
+<section id="css-intro" class="topic active">
+  <h2>🎨 CSS — Estilo, Layout, Responsividade e Recursos Avançados</h2>
+  <div class="mini-index">
+    <strong>Nesta seção você encontra:</strong>
+    Sintaxe e seletores · Box model · Display · Flexbox · Grid · Texto e cores · Posicionamento · Responsividade ·
+    Pseudo-classes · Pseudo-elementos · Transições e animações · Variáveis CSS · Funções como <code>calc</code> e <code>clamp</code>.
+  </div>
+</section>
+
+<section id="css-basico" class="topic">
+  <h3>Sintaxe básica e seletores</h3>
+  <p><strong>O que é:</strong> a forma padrão de escrever regras de estilo para elementos HTML.</p>
+  <p><strong>Por que usar:</strong> separa a aparência do conteúdo, deixando o HTML mais limpo.</p>
+  <pre><code>/* seletor */ 
+p {
+  color: blue;        /* propriedade: valor */
+  font-size: 16px;
+}</code></pre>
+
+  <h4>Tipos de seletores</h4>
+  <p><strong>O que é:</strong> diferentes formas de apontar para elementos no HTML.</p>
+  <p><strong>Por que usar:</strong> permite aplicar estilos específicos para partes do layout.</p>
+  <pre><code>/* por tag */
+p { color: blue; }
+
+/* por classe (use em vários elementos) */
+.destaque { background-color: yellow; }
+
+/* por id (use em um elemento único) */
+#titulo-principal { font-size: 32px; }
+
+/* descendente */
+.card p { margin-bottom: 8px; }
+
+/* filho direto */
+ul &gt; li { list-style: square; }
+
+/* atributo */
+input[type="text"] { border: 1px solid #ccc; }</code></pre>
+</section>
+
+<section id="css-box-model" class="topic">
+  <h3>Box model (Modelo de Caixa)</h3>
+  <p><strong>O que é:</strong> TODO elemento HTML é tratado como uma CAIXA retangular com 4 camadas: conteúdo, padding (preenchimento), borda e margem. Entender isso é essencial para dominar layout CSS.</p>
+
+  <p><strong>Por que usar:</strong> sem entender o box model, você vai sofrer com espaçamentos inesperados, elementos "quebrados" e layouts que não se comportam como esperado.</p>
+
+  <h4>As 4 camadas da caixa (de dentro para fora)</h4>
+  <pre><code>/* Visualização ASCII do Box Model:
+ ┌─────────────── MARGIN (margem externa) ──────────────────┐
+ │  ┌─────────────── BORDER (borda) ────────────────────┐  │
+ │  │  ┌──────────── PADDING (preenchimento) ────────┐  │  │
+ │  │  │  ┌────────── CONTENT (conteúdo) ──────────┐ │  │  │
+ │  │  │  │                                        │ │  │  │
+ │  │  │  │   Texto, imagem ou outros elementos   │ │  │  │
+ │  │  │  │                                        │ │  │  │
+ │  │  │  └────────────────────────────────────────┘ │  │  │
+ │  │  └───────────────────────────────────────────────┘  │  │
+ │  └───────────────────────────────────────────────────────┘  │
+ └───────────────────────────────────────────────────────────────┘
+*/
+
+.box {
+  /* 1. CONTEÚDO: largura e altura do conteúdo */
+  width: 200px;
+  height: 100px;
+
+  /* 2. PADDING: espaço INTERNO (entre conteúdo e borda) */
+  padding: 20px;           /* todos os lados */
+  /* ou específico: */
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  /* ou shorthand: */
+  padding: 10px 15px;      /* vertical | horizontal */
+  padding: 10px 15px 20px; /* topo | horizontal | baixo */
+
+  /* 3. BORDER: borda visível */
+  border: 2px solid #000;  /* largura | estilo | cor */
+  /* ou específico: */
+  border-width: 2px;
+  border-style: solid;     /* solid, dashed, dotted, double, none */
+  border-color: #000;
+  border-radius: 8px;      /* bordas arredondadas */
+
+  /* 4. MARGIN: espaço EXTERNO (entre este elemento e outros) */
+  margin: 20px;            /* todos os lados */
+  /* ou específico: */
+  margin-top: 10px;
+  margin-right: auto;      /* "auto" centraliza horizontalmente */
+  margin-bottom: 10px;
+  margin-left: auto;
+}
+</code></pre>
+
+  <h4>Problema: box-sizing e tamanho total</h4>
+  <p><strong>O problema:</strong> Por padrão, <code>width</code> e <code>height</code> aplicam-se APENAS ao conteúdo. Padding e border são ADICIONADOS, tornando a caixa maior que o esperado.</p>
+  <pre><code>/* SEM box-sizing: border-box */
+.caixa-padrao {
+  width: 200px;    /* largura do CONTEÚDO */
+  padding: 20px;   /* +20px de cada lado = +40px */
+  border: 5px;     /* +5px de cada lado = +10px */
+}
+/* Largura TOTAL = 200 + 40 + 10 = 250px (SURPRESA!) */
+
+
+/* COM box-sizing: border-box (RECOMENDADO) */
+.caixa-melhor {
+  box-sizing: border-box;
+  width: 200px;    /* largura TOTAL (incluindo padding e border) */
+  padding: 20px;
+  border: 5px;
+}
+/* Largura TOTAL = 200px (como esperado!) */
+/* Conteúdo ajusta automaticamente: 200 - 40 - 10 = 150px */
+</code></pre>
+
+  <h4>Reset universal (USE SEMPRE no início do CSS)</h4>
+  <pre><code>/* Aplica box-sizing: border-box em TUDO */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;      /* remove margens padrão */
+  padding: 0;     /* remove padding padrão */
+}
+
+/* Por que fazer isso:
+   1. Cálculos de largura mais previsíveis
+   2. Remove espaçamentos inesperados do navegador
+   3. Facilita MUITO o desenvolvimento
+   4. É usado em praticamente todos os projetos profissionais
+*/
+</code></pre>
+
+  <h4>Margin collapse (comportamento estranho mas importante)</h4>
+  <p><strong>O que é:</strong> Quando duas margens verticais se tocam, elas se "fundem" e apenas a MAIOR é aplicada (não somam!).</p>
+  <pre><code>/* Exemplo de margin collapse */
+.paragrafo1 {
+  margin-bottom: 30px;  /* margem inferior */
+}
+
+.paragrafo2 {
+  margin-top: 20px;     /* margem superior */
+}
+
+/* Espaço entre eles: 30px (NÃO 50px!)
+   A maior margem "vence"
+*/
+
+/* COMO EVITAR margin collapse: */
+/* 1. Use padding em vez de margin */
+/* 2. Use flexbox ou grid (não colapsam) */
+/* 3. Adicione border ou padding entre os elementos */
+</code></pre>
+
+  <h4>Exemplo prático completo</h4>
+  <pre><code>/* Card de produto bem espaçado */
+.product-card {
+  /* Box model completo */
+  width: 300px;
+  padding: 24px;                    /* espaço interno generoso */
+  border: 1px solid #e0e0e0;        /* borda sutil */
+  border-radius: 12px;              /* cantos arredondados */
+  margin: 16px;                     /* espaço entre cards */
+
+  /* Efeitos extras */
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);  /* sombra suave */
+
+  /* Com box-sizing: border-box, largura total é 300px */
+  box-sizing: border-box;
+}
+
+.product-card:hover {
+  /* Destaque ao passar mouse */
+  border-color: #3b82f6;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+}
+</code></pre>
+
+  <p class="small-note">
+    <strong>Dica:</strong> No DevTools do navegador (F12), clique em um elemento e veja o box model visual na aba "Computed" ou "Layout". É a melhor forma de entender!
+  </p>
+</section>
+
+<section id="css-layout" class="topic">
+  <h3>Display, Flexbox e Grid</h3>
+
+  <h4>Display</h4>
+  <p><strong>O que é:</strong> define como o elemento se comporta em relação ao fluxo da página.</p>
+  <ul>
+    <li><code>block</code> – ocupa a linha inteira;</li>
+    <li><code>inline</code> – ocupa só o conteúdo;</li>
+    <li><code>inline-block</code> – mistura dos dois;</li>
+    <li><code>flex</code> – layout flexível em linha ou coluna;</li>
+    <li><code>grid</code> – layout em grade.</li>
+  </ul>
+
+  <h4>Flexbox</h4>
+  <p><strong>O que é:</strong> sistema de layout unidimensional (linha ou coluna).</p>
+  <p><strong>Por que usar:</strong> facilita o alinhamento e distribuição de elementos.</p>
+  <pre><code>.container {
+  display: flex;
+  justify-content: center;   /* eixo principal (horizontal) */
+  align-items: center;       /* eixo cruzado (vertical) */
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.item {
+  flex: 1;
+}</code></pre>
+
+  <h4>Grid</h4>
+  <p><strong>O que é:</strong> sistema de layout bidimensional (linhas e colunas).</p>
+  <p><strong>Por que usar:</strong> excelente para páginas inteiras e dashboards.</p>
+  <pre><code>.grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* sidebar + conteúdo */
+  gap: 16px;
+}
+
+/* Grid de cards responsivo */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}</code></pre>
+</section>
+
+<section id="css-texto" class="topic">
+  <h3>Texto, cores e fundo</h3>
+
+  <h4>Texto e fontes</h4>
+  <p><strong>O que é:</strong> configurações de legibilidade e aparência do texto.</p>
+  <pre><code>body {
+  font-family: system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 32px;
+  text-align: center;
+  letter-spacing: 1px;
+}</code></pre>
+
+  <h4>Cores</h4>
+  <p><strong>O que é:</strong> formas diversas de representar cores.</p>
+  <p><strong>Por que usar:</strong> cada formato pode facilitar em contextos específicos (transparência, tema, etc.).</p>
+  <ul>
+    <li>Nome: <code>red</code>, <code>blue</code>…</li>
+    <li>Hex: <code>#ff0000</code></li>
+    <li>RGB: <code>rgb(255, 0, 0)</code></li>
+    <li>RGBA: <code>rgba(0, 0, 0, 0.5)</code></li>
+    <li>HSL: <code>hsl(210, 100%, 50%)</code></li>
+  </ul>
+
+  <h4>Fundo, bordas e sombras</h4>
+  <p><strong>O que é:</strong> elementos visuais que dão profundidade e separação.</p>
+  <pre><code>.card {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #dddddd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  padding: 16px;
+}</code></pre>
+</section>
+
+<section id="css-position" class="topic">
+  <h3>Posicionamento (position)</h3>
+  <p><strong>O que é:</strong> sistema para posicionar elementos de forma mais precisa.</p>
+  <p><strong>Por que usar:</strong> útil para cabeçalhos fixos, badges, modais etc.</p>
+  <pre><code>.container {
+  position: relative;
+}
+
+.caixa-absoluta {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.header-fixo {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 100;
+}</code></pre>
+</section>
+
+<section id="css-responsivo" class="topic">
+  <h3>Responsividade</h3>
+  <p><strong>O que é:</strong> adaptação do layout para diferentes tamanhos de tela.</p>
+  <p><strong>Por que usar:</strong> hoje a maioria dos acessos é via celular, então o site precisa se ajustar.</p>
+
+  <h4>Media query (mobile first)</h4>
+  <pre><code>.container {
+  padding: 10px;
+}
+
+/* A partir de 768px aumenta padding e centraliza */
+@media (min-width: 768px) {
+  .container {
+    padding: 20px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+}</code></pre>
+</section>
+
+<section id="css-avancado" class="topic">
+  <h3>Pseudo-classes, pseudo-elementos e animações</h3>
+
+  <h4>Pseudo-classes</h4>
+  <p><strong>O que é:</strong> estados especiais de um elemento (hover, focus, etc.).</p>
+  <p><strong>Por que usar:</strong> melhora a interação e o feedback visual.</p>
+  <pre><code>a:hover {
+  color: #007acc;
+}
+
+input:focus {
+  outline: 2px solid #007acc;
+}
+
+li:nth-child(odd) { /* itens ímpares */
+  background-color: #f0f0f0;
+}</code></pre>
+
+  <h4>Pseudo-elementos</h4>
+  <p><strong>O que é:</strong> partes “virtuais” de um elemento.</p>
+  <p><strong>Por que usar:</strong> permite adicionar detalhes sem criar novas tags.</p>
+  <pre><code>.titulo::before {
+  content: "★ ";
+  color: gold;
+}
+
+.titulo::after {
+  content: " ✓";
+  color: green;
+}</code></pre>
+
+  <h4>Transições e animações</h4>
+  <p><strong>O que é:</strong> mudanças suaves de estado (transitions) e animações contínuas (keyframes).</p>
+  <p><strong>Por que usar:</strong> deixa o site mais fluido e agradável.</p>
+  <pre><code>button {
+  background: #007acc;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+button:hover {
+  background: #005a99;
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Animação com keyframes */
+.caixa {
+  width: 50px;
+  height: 50px;
+  background: red;
+  animation: pular 0.8s infinite alternate;
+}
+
+@keyframes pular {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-20px); }
+}</code></pre>
+</section>
+
+<section id="css-transforms" class="topic">
+  <h3>Transforms 2D e 3D</h3>
+  <p><strong>O que é:</strong> transformações que modificam a posição, rotação, escala e perspectiva de elementos.</p>
+  <p><strong>Por que usar:</strong> criar efeitos visuais impressionantes sem JavaScript.</p>
+
+  <h4>Transforms 2D</h4>
+  <pre><code>/* Translação (mover) */
+.mover-direita {
+  transform: translateX(50px);
+}
+
+.mover-diagonal {
+  transform: translate(30px, 20px);
+}
+
+/* Rotação */
+.rodar {
+  transform: rotate(45deg);
+}
+
+/* Escala */
+.aumentar {
+  transform: scale(1.5); /* 150% */
+}
+
+.achatar {
+  transform: scaleY(0.5); /* metade da altura */
+}
+
+/* Inclinação (skew) */
+.inclinar {
+  transform: skewX(20deg);
+}
+
+/* Combinando múltiplas transformações */
+.card:hover {
+  transform: translateY(-10px) rotate(2deg) scale(1.05);
+  transition: transform 0.3s ease;
+}</code></pre>
+
+  <h4>Transforms 3D</h4>
+  <p><strong>O que é:</strong> transformações que adicionam profundidade (eixo Z).</p>
+  <p><strong>Por que usar:</strong> efeitos de flip, cards 3D, carrosséis.</p>
+  <pre><code>.container-3d {
+  perspective: 1000px; /* necessário para ver o efeito 3D */
+}
+
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card-3d:hover {
+  transform: rotateY(180deg);
+}
+
+/* Movimentação no eixo Z (profundidade) */
+.proximo {
+  transform: translateZ(50px);
+}
+
+.distante {
+  transform: translateZ(-50px);
+}</code></pre>
+
+  <h4>Transform origin</h4>
+  <p><strong>O que é:</strong> ponto de origem da transformação (padrão é o centro).</p>
+  <pre><code>.girar-canto {
+  transform-origin: top left;
+  transform: rotate(90deg);
+}
+
+.girar-baixo {
+  transform-origin: bottom center;
+  transform: rotateX(45deg);
+}</code></pre>
+</section>
+
+<section id="css-filtros" class="topic">
+  <h3>Filtros e efeitos visuais</h3>
+  <p><strong>O que é:</strong> efeitos visuais aplicados a elementos como blur, brilho, contraste etc.</p>
+  <p><strong>Por que usar:</strong> criar efeitos sem precisar de editores de imagem.</p>
+
+  <h4>Filtros básicos</h4>
+  <pre><code>/* Blur (desfoque) */
+.desfocado {
+  filter: blur(5px);
+}
+
+/* Brilho */
+.brilhante {
+  filter: brightness(1.5); /* 150% */
+}
+
+.escuro {
+  filter: brightness(0.7);
+}
+
+/* Contraste */
+.alto-contraste {
+  filter: contrast(200%);
+}
+
+/* Saturação (intensidade das cores) */
+.vibrante {
+  filter: saturate(200%);
+}
+
+.preto-branco {
+  filter: grayscale(100%);
+}
+
+/* Sépia (tom amarelado vintage) */
+.vintage {
+  filter: sepia(80%);
+}
+
+/* Inverter cores */
+.invertido {
+  filter: invert(100%);
+}
+
+/* Matiz (mudar cor) */
+.mudar-cor {
+  filter: hue-rotate(90deg);
+}</code></pre>
+
+  <h4>Combinando filtros</h4>
+  <pre><code>.foto-destaque {
+  filter: brightness(1.1) contrast(1.2) saturate(1.3);
+  transition: filter 0.3s;
+}
+
+.foto-destaque:hover {
+  filter: brightness(1) contrast(1) saturate(1);
+}</code></pre>
+
+  <h4>Backdrop filter (desfoque de fundo)</h4>
+  <p><strong>O que é:</strong> aplica filtro apenas ao que está atrás do elemento.</p>
+  <p><strong>Por que usar:</strong> efeito vidro fosco (glassmorphism) popular em UIs modernas.</p>
+  <pre><code>.card-vidro {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 20px;
+}</code></pre>
+
+  <h4>Drop shadow</h4>
+  <p><strong>O que é:</strong> sombra que segue a forma do elemento (diferente de box-shadow).</p>
+  <pre><code>/* Sombra em imagem PNG transparente */
+.icone {
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}</code></pre>
+</section>
+
+<section id="css-grid-avancado" class="topic">
+  <h3>Grid avançado</h3>
+  <p><strong>O que é:</strong> técnicas avançadas de CSS Grid para layouts complexos.</p>
+  <p><strong>Por que usar:</strong> criar layouts profissionais e responsivos com menos código.</p>
+
+  <h4>Grid areas (áreas nomeadas)</h4>
+  <pre><code>.layout {
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "sidebar main main"
+    "footer footer footer";
+  grid-template-columns: 200px 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 16px;
+  min-height: 100vh;
+}
+
+.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; }
+.footer  { grid-area: footer; }
+
+/* Responsivo: mobile first */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-areas:
+      "header"
+      "main"
+      "sidebar"
+      "footer";
+    grid-template-columns: 1fr;
+  }
+}</code></pre>
+
+  <h4>Grid auto-flow e dense</h4>
+  <p><strong>O que é:</strong> controla como itens são posicionados automaticamente.</p>
+  <pre><code>/* Preenche buracos automaticamente */
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-auto-flow: dense;
+  gap: 10px;
+}
+
+.destaque {
+  grid-column: span 2;
+  grid-row: span 2;
+}</code></pre>
+
+  <h4>Minmax e auto-fit vs auto-fill</h4>
+  <pre><code>/* auto-fill: cria o máximo de colunas possível */
+.grid-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* auto-fit: expande colunas para preencher espaço */
+.grid-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* Minmax para controle fino */
+.grid-controle {
+  grid-template-columns: minmax(150px, 300px) 1fr minmax(200px, 25%);
+}</code></pre>
+
+  <h4>Subgrid (navegadores modernos)</h4>
+  <p><strong>O que é:</strong> permite que elementos filhos usem a grid do pai.</p>
+  <pre><code>.pai {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.filho {
+  display: grid;
+  grid-template-columns: subgrid;
+  gap: 10px;
+}</code></pre>
+</section>
+
+<section id="css-variaveis" class="topic">
+  <h3>Variáveis CSS e funções úteis</h3>
+
+  <h4>Variáveis CSS (custom properties)</h4>
+  <p><strong>O que é:</strong> valores reutilizáveis definidos em um lugar e usados em vários.</p>
+  <p><strong>Por que usar:</strong> facilita temas (claro/escuro) e manutenção.</p>
+  <pre><code>:root {
+  --cor-primaria: #007acc;
+  --cor-secundaria: #00b4d8;
+  --radius: 12px;
+}
+
+.botao {
+  background: var(--cor-primaria);
+  border-radius: var(--radius);
+  color: #fff;
+}
+
+.botao-secundario {
+  background: var(--cor-secundaria);
+}</code></pre>
+
+  <h4><code>calc()</code> e <code>clamp()</code></h4>
+  <p><strong>O que é:</strong> funções para calcular valores dinamicamente.</p>
+  <p><strong>Por que usar:</strong> ajuda na responsividade sem media queries complexas.</p>
+  <pre><code>.box-larga {
+  width: calc(100% - 40px);
+}
+
+.titulo-responsivo {
+  font-size: clamp(1.2rem, 2vw, 2rem);
+}</code></pre>
+
+  <p class="small-note">
+    <code>clamp(min, ideal, max)</code> é muito útil para fontes e larguras que precisam se adaptar sem ficar nem muito pequenas nem gigantes.
+  </p>
+</section>
+
+<section id="css-metodologias" class="topic">
+  <h3>Metodologias CSS (BEM, SMACSS)</h3>
+  <p><strong>O que é:</strong> convenções de nomenclatura e organização de CSS para projetos grandes.</p>
+  <p><strong>Por que usar:</strong> evita conflitos, melhora manutenção e facilita trabalho em equipe.</p>
+
+  <h4>BEM (Block Element Modifier)</h4>
+  <p><strong>O que é:</strong> metodologia que usa blocos, elementos e modificadores.</p>
+  <p><strong>Estrutura:</strong> <code>.bloco__elemento--modificador</code></p>
+  <pre><code>/* Bloco: componente principal */
+.card { }
+
+/* Elemento: parte do bloco (usa __) */
+.card__titulo { }
+.card__imagem { }
+.card__descricao { }
+.card__botao { }
+
+/* Modificador: variação do bloco ou elemento (usa --) */
+.card--destaque {
+  border: 2px solid gold;
+}
+
+.card__botao--primario {
+  background: blue;
+  color: white;
+}
+
+.card__botao--secundario {
+  background: gray;
+}
+
+/* HTML */
+&lt;div class="card card--destaque"&gt;
+  &lt;img class="card__imagem" src="foto.jpg"&gt;
+  &lt;h2 class="card__titulo"&gt;Título&lt;/h2&gt;
+  &lt;p class="card__descricao"&gt;Texto&lt;/p&gt;
+  &lt;button class="card__botao card__botao--primario"&gt;Comprar&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+
+  <h4>Vantagens do BEM</h4>
+  <ul>
+    <li>Nomes de classes autoexplicativos</li>
+    <li>Evita conflitos de nomes</li>
+    <li>Facilita refatoração</li>
+    <li>Baixa especificidade (não precisa de !important)</li>
+  </ul>
+
+  <h4>SMACSS (Scalable and Modular Architecture for CSS)</h4>
+  <p><strong>O que é:</strong> organiza CSS em 5 categorias.</p>
+  <pre><code>/* 1. Base - reset, elementos sem classes */
+body { margin: 0; font-family: sans-serif; }
+a { color: blue; }
+
+/* 2. Layout - estrutura principal (prefixo l-) */
+.l-header { }
+.l-sidebar { }
+.l-main { }
+
+/* 3. Module - componentes reutilizáveis */
+.card { }
+.botao { }
+.menu { }
+
+/* 4. State - estados (prefixo is-) */
+.is-active { }
+.is-hidden { display: none; }
+.is-disabled { opacity: 0.5; pointer-events: none; }
+
+/* 5. Theme - temas visuais */
+.theme-dark { background: #222; color: #fff; }
+.theme-light { background: #fff; color: #222; }</code></pre>
+
+  <h4>Utility-first (Tailwind-style)</h4>
+  <p><strong>O que é:</strong> classes utilitárias pequenas e reutilizáveis.</p>
+  <pre><code>/* Utilities */
+.mt-4 { margin-top: 16px; }
+.p-2 { padding: 8px; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.gap-4 { gap: 16px; }
+.text-lg { font-size: 18px; }
+.font-bold { font-weight: bold; }
+.rounded { border-radius: 8px; }
+
+/* HTML */
+&lt;div class="flex items-center gap-4 p-2 rounded"&gt;
+  &lt;h1 class="text-lg font-bold"&gt;Título&lt;/h1&gt;
+&lt;/div&gt;</code></pre>
+</section>
+
+<section id="css-performance" class="topic">
+  <h3>Performance e otimização</h3>
+  <p><strong>O que é:</strong> técnicas para tornar o CSS mais rápido e eficiente.</p>
+  <p><strong>Por que usar:</strong> sites mais rápidos melhoram experiência do usuário e SEO.</p>
+
+  <h4>Seletores eficientes</h4>
+  <pre><code>/* ❌ EVITE - seletores muito específicos */
+body div.container ul li a.link { }
+
+/* ✅ PREFIRA - seletores simples */
+.nav-link { }
+
+/* ❌ EVITE - seletor universal */
+* { margin: 0; }
+
+/* ✅ PREFIRA - reset específico */
+body, h1, h2, p { margin: 0; }</code></pre>
+
+  <h4>Will-change (otimização de animações)</h4>
+  <p><strong>O que é:</strong> avisa o navegador que elemento vai mudar, otimizando renderização.</p>
+  <p><strong>Cuidado:</strong> use apenas em animações ativas, não em todos os elementos.</p>
+  <pre><code>.animado {
+  will-change: transform, opacity;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.animado:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+/* Remova will-change após animação */
+.animado.fim {
+  will-change: auto;
+}</code></pre>
+
+  <h4>Contain (isolamento de layout)</h4>
+  <p><strong>O que é:</strong> diz ao navegador que mudanças no elemento não afetam o resto da página.</p>
+  <pre><code>.widget {
+  contain: layout style; /* isola layout e estilo */
+}
+
+.card-list {
+  contain: layout; /* mudanças não afetam layout externo */
+}</code></pre>
+
+  <h4>Content-visibility (lazy rendering)</h4>
+  <p><strong>O que é:</strong> renderiza conteúdo apenas quando visível (melhora performance inicial).</p>
+  <pre><code>.secao-grande {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px; /* tamanho estimado */
+}</code></pre>
+
+  <h4>Boas práticas gerais</h4>
+  <ul>
+    <li><strong>Minifique CSS:</strong> remova espaços e comentários em produção</li>
+    <li><strong>Critical CSS:</strong> carregue CSS essencial inline, resto assíncrono</li>
+    <li><strong>Evite @import:</strong> use &lt;link&gt; em vez de @import (mais rápido)</li>
+    <li><strong>Use CSS nativo:</strong> preferir Grid/Flex a frameworks pesados quando possível</li>
+    <li><strong>Combine arquivos:</strong> menos requests = mais rápido</li>
+    <li><strong>Use font-display:</strong> <code>font-display: swap</code> evita texto invisível</li>
+  </ul>
+
+  <pre><code>/* Font loading otimizado */
+@font-face {
+  font-family: 'MinhaFonte';
+  src: url('fonte.woff2') format('woff2');
+  font-display: swap; /* mostra texto com fonte padrão até carregar */
+}
+
+/* Preload de recursos críticos no HTML */
+&lt;link rel="preload" href="style.css" as="style"&gt;
+&lt;link rel="preload" href="fonte.woff2" as="font" type="font/woff2" crossorigin&gt;</code></pre>
+
+  <h4>CSS Layers (organização moderna)</h4>
+  <p><strong>O que é:</strong> controla ordem de cascata sem !important.</p>
+  <pre><code>/* Define ordem das camadas */
+@layer reset, base, components, utilities;
+
+@layer reset {
+  * { margin: 0; padding: 0; }
+}
+
+@layer base {
+  body { font-family: sans-serif; }
+}
+
+@layer components {
+  .btn { padding: 10px 20px; }
+}
+
+@layer utilities {
+  .hidden { display: none !important; }
+}</code></pre>
+</section>

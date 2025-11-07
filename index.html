@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Super Guia Completo: HTML, CSS e TypeScript</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Tema do Prism (código colorido) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <script>
+    /* Define o Prism como manual para ativar a coloração quando quisermos */
+    window.Prism = window.Prism || {};
+    window.Prism.manual = true;
+  </script>
+</head>
+
+<body data-theme="dark">
+  <header>
+    <h1>Super Guia Completo de HTML, CSS e TypeScript</h1>
+    <p>Criei esse guia para ajudar outros estudantes iguais a mim que estão procurando informações para ajudar no seu
+      aprendizado, aqui você encontra um compilado das coisas que me ajudaram até então 😄</p>
+
+    <div class="top-bar">
+      <div class="buttons-group">
+        <!-- Botões principais de categoria -->
+        <button class="btn active" data-section="html">HTML</button>
+        <button class="btn" data-section="css">CSS</button>
+        <button class="btn" data-section="ts">TypeScript</button>
+      </div>
+
+      <!-- Alternância de tema -->
+      <button class="btn btn-outline theme-toggle" id="themeToggle">
+        ☀️ Modo claro
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Índice lateral será preenchido dinamicamente via JS -->
+    <nav class="side-index" id="sideIndex"></nav>
+
+    <section class="content-area">
+      <p class="categories-info">
+        Use este guia como um livro: escolha a categoria, navegue pelo índice lateral e leia as explicações com calma.
+      </p>
+
+      <!-- Aqui entra o conteúdo carregado dinamicamente -->
+      <div id="content">Carregando conteúdo...</div>
+    </section>
+  </main>
+
+  <footer>
+    Feito para você estudar e consultar sempre que precisar 💙<br />
+    Dica: deixe este arquivo aberto enquanto programa e vá adicionando seus próprios exemplos.
+  </footer>
+
+  <!-- Prism: biblioteca para colorir código -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-markup.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-typescript.min.js"></script>
+
+  <!-- Script principal: controla categorias, modo escuro e exibição de seções -->
+  <script src="js/main.js"></script>
+</body>
+
+</html>

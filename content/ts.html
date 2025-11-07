@@ -1,0 +1,1007 @@
+<section id="ts-intro" class="topic active">
+  <h2>⚙️ TypeScript — Tipos, POO, Generics e DOM</h2>
+
+  <div class="mini-index">
+    <strong>Nesta seção você encontra:</strong>
+    Introdução · Tipos básicos · Any / unknown / never · Union, literal, enum · Objetos e interfaces · Funções ·
+    Classes e herança · Generics · Narrowing · Utility types · DOM com TS · Módulos · Async/await.
+  </div>
+
+  <h3>Introdução</h3>
+  <p><strong>O que é:</strong> TypeScript é um “superconjunto” do JavaScript, ou seja, tudo que existe em JS existe em TS, com o extra de tipagem estática.</p>
+  <p><strong>Por que usar:</strong> encontrar erros mais cedo, deixar o código mais previsível e facilitar manutenção em projetos grandes.</p>
+
+  <pre><code>// Instalar TypeScript globalmente (via npm):
+// npm install -g typescript
+
+// Compilar arquivo:
+// tsc arquivo.ts</code></pre>
+</section>
+
+<section id="ts-tipos-basicos" class="topic">
+  <h3>Tipos básicos</h3>
+
+  <h4>Primitivos</h4>
+  <p><strong>O que é:</strong> tipos mais simples: <code>string</code>, <code>number</code>, <code>boolean</code> etc.</p>
+  <p><strong>Por que usar:</strong> deixam claro que tipo de dado você espera e evita usar valores errados.</p>
+
+  <pre><code>let nome: string = "Ana";
+let idade: number = 25;
+let ativo: boolean = true;
+
+let numeros: number[] = [1, 2, 3];
+let nomes: string[] = ["Ana", "João"];</code></pre>
+
+  <h4>Any, unknown e never</h4>
+  <p><strong>O que é:</strong> tipos especiais para casos específicos.</p>
+  <ul>
+    <li><strong>any</strong> – desliga a checagem de tipo (aceita qualquer coisa);</li>
+    <li><strong>unknown</strong> – parecido com any, mas obriga checar antes de usar;</li>
+    <li><strong>never</strong> – função que nunca retorna (erro ou loop infinito).</li>
+  </ul>
+  <p><strong>Por que usar:</strong> só quando necessário: <code>unknown</code> para dados externos, <code>never</code> para funções que sempre lançam erro.</p>
+
+  <pre><code>let algo: any = "teste";   // foge da tipagem, use com cuidado
+algo = 123;
+
+let seguro: unknown = "oi"; // mais seguro que any
+if (typeof seguro === "string") {
+  console.log(seguro.toUpperCase());
+}
+
+function erro(msg: string): never {
+  throw new Error(msg);
+}</code></pre>
+
+  <h4>Union types e type alias</h4>
+  <p><strong>O que é:</strong> forma de dizer que algo pode ser de mais de um tipo e dar um nome para esse conjunto.</p>
+  <p><strong>Por que usar:</strong> ajuda a modelar casos em que um valor pode ter mais de uma forma (ex.: id numérico ou string).</p>
+
+  <pre><code>type ID = string | number;
+
+let idUsuario: ID = 42;
+idUsuario = "abc";
+
+// literal types
+type Status = "ativo" | "inativo";
+
+let statusUsuario: Status = "ativo";
+// statusUsuario = "pendente"; // erro</code></pre>
+
+  <h4>Enum</h4>
+  <p><strong>O que é:</strong> conjunto de valores nomeados.</p>
+  <p><strong>Por que usar:</strong> substitui strings soltas e evita erros de digitação.</p>
+
+  <pre><code>enum Cor {
+  Vermelho = "vermelho",
+  Verde = "verde",
+  Azul = "azul"
+}
+
+let corEscolhida: Cor = Cor.Vermelho;</code></pre>
+</section>
+
+<section id="ts-objetos-interfaces" class="topic">
+  <h3>Objetos, interfaces e tipos compostos</h3>
+
+  <h4>Objetos tipados</h4>
+  <p><strong>O que é:</strong> declarar a forma de um objeto (quais propriedades ele tem).</p>
+  <p><strong>Por que usar:</strong> evita acessar propriedades inexistentes e documenta os dados.</p>
+
+  <pre><code>let usuario: {
+  nome: string;
+  idade: number;
+  email?: string; // opcional
+} = {
+  nome: "Maria",
+  idade: 30
+};</code></pre>
+
+  <h4>Interfaces</h4>
+  <p><strong>O que é:</strong> uma forma reutilizável de descrever objetos.</p>
+  <p><strong>Por que usar:</strong> deixa o código mais organizado, principalmente ao trabalhar com funções e classes.</p>
+
+  <pre><code>interface Usuario {
+  nome: string;
+  idade: number;
+  email?: string;
+}
+
+const u1: Usuario = {
+  nome: "Ana",
+  idade: 22
+};</code></pre>
+
+  <h4>Extensão de interfaces</h4>
+  <p><strong>O que é:</strong> uma interface herdando campos de outra.</p>
+  <p><strong>Por que usar:</strong> reaproveitar estruturas comuns, evitando repetição.</p>
+
+  <pre><code>interface Pessoa {
+  nome: string;
+}
+
+interface Funcionario extends Pessoa {
+  cargo: string;
+}
+
+const f1: Funcionario = {
+  nome: "João",
+  cargo: "Desenvolvedor"
+};</code></pre>
+
+  <h4>Intersection types</h4>
+  <p><strong>O que é:</strong> combinação de tipos usando <code>&amp;</code>.</p>
+  <p><strong>Por que usar:</strong> quando você precisa de algo que tenha as propriedades de dois tipos ao mesmo tempo.</p>
+
+  <pre><code>type ComID = { id: number };
+type Produto = { nome: string; preco: number };
+
+type ProdutoComID = Produto & ComID;
+
+const prod: ProdutoComID = {
+  id: 1,
+  nome: "Mouse",
+  preco: 50
+};</code></pre>
+</section>
+
+<section id="ts-funcoes" class="topic">
+  <h3>Funções</h3>
+
+  <h4>Parâmetros e retorno tipados</h4>
+  <p><strong>O que é:</strong> declarar o tipo dos parâmetros e do resultado.</p>
+  <p><strong>Por que usar:</strong> impede passar tipos errados para a função e torna o código autoexplicativo.</p>
+
+  <pre><code>function somar(a: number, b: number): number {
+  return a + b;
+}
+
+function logar(mensagem: string): void {
+  console.log(mensagem);
+}</code></pre>
+
+  <h4>Funções anônimas e arrow functions</h4>
+  <p><strong>O que é:</strong> formas curtas de declarar funções.</p>
+  <p><strong>Por que usar:</strong> muito usadas em callbacks e código moderno (React, etc.).</p>
+
+  <pre><code>const multiplicar = (a: number, b: number): number =&gt; a * b;
+
+const saudar = (nome: string): string =&gt; `Olá, ${nome}!`;</code></pre>
+
+  <h4>Parâmetros opcionais e padrão</h4>
+  <p><strong>O que é:</strong> parâmetros que podem estar ausentes e valores padrão.</p>
+  <p><strong>Por que usar:</strong> torna funções mais flexíveis, sem precisar criar várias versões.</p>
+
+  <pre><code>function apresentar(nome: string, idade?: number): string {
+  if (idade) {
+    return `Meu nome é ${nome} e tenho ${idade} anos.`;
+  }
+  return `Meu nome é ${nome}.`;
+}
+
+function aplicarDesconto(preco: number, desconto: number = 0.1): number {
+  return preco - preco * desconto;
+}</code></pre>
+</section>
+
+<section id="ts-classes" class="topic">
+  <h3>Classes, POO e herança</h3>
+
+  <h4>Classe básica</h4>
+  <p><strong>O que é:</strong> molde para criar objetos com dados (propriedades) e comportamento (métodos).</p>
+  <p><strong>Por que usar:</strong> ajuda a organizar código orientado a objetos, principalmente em apps grandes.</p>
+
+  <pre><code>class Pessoa {
+  constructor(public nome: string, public idade: number) {}
+
+  apresentar(): string {
+    return `Eu sou ${this.nome} e tenho ${this.idade} anos.`;
+  }
+}
+
+const p = new Pessoa("Carlos", 28);
+console.log(p.apresentar());</code></pre>
+
+  <h4>Modificadores de acesso</h4>
+  <p><strong>O que é:</strong> palavras-chave que controlam quem pode acessar propriedades/métodos.</p>
+  <ul>
+    <li><code>public</code> – acessível de qualquer lugar;</li>
+    <li><code>private</code> – acessível só dentro da própria classe;</li>
+    <li><code>protected</code> – acessível na classe e em quem herda dela.</li>
+  </ul>
+
+  <pre><code>class ContaBancaria {
+  public titular: string;
+  private saldo: number;
+
+  constructor(titular: string, saldoInicial: number) {
+    this.titular = titular;
+    this.saldo = saldoInicial;
+  }
+
+  public depositar(valor: number): void {
+    this.saldo += valor;
+  }
+
+  public getSaldo(): number {
+    return this.saldo;
+  }
+}</code></pre>
+
+  <h4>Classes abstratas e herança</h4>
+  <p><strong>O que é:</strong> classes que não podem ser instanciadas diretamente e servem de base para outras.</p>
+  <p><strong>Por que usar:</strong> definir contratos e comportamentos que subclasses devem implementar.</p>
+
+  <pre><code>abstract class Forma {
+  abstract calcularArea(): number;
+}
+
+class Retangulo extends Forma {
+  constructor(public largura: number, public altura: number) {
+    super();
+  }
+
+  calcularArea(): number {
+    return this.largura * this.altura;
+  }
+}
+
+const r = new Retangulo(10, 5);
+console.log(r.calcularArea()); // 50</code></pre>
+</section>
+
+<section id="ts-generics" class="topic">
+  <h3>Generics e recursos avançados</h3>
+
+  <h4>Funções genéricas</h4>
+  <p><strong>O que é:</strong> funções que funcionam com vários tipos, mas ainda assim são tipadas.</p>
+  <p><strong>Por que usar:</strong> evita duplicar código para cada tipo diferente.</p>
+
+  <pre><code>function primeiroElemento&lt;T&gt;(array: T[]): T | undefined {
+  return array[0];
+}
+
+const n = primeiroElemento&lt;number&gt;([1, 2, 3]);
+const s = primeiroElemento&lt;string&gt;(["a", "b"]);
+// n é number | undefined, s é string | undefined</code></pre>
+
+  <h4>Interfaces genéricas</h4>
+  <p><strong>O que é:</strong> interfaces que recebem tipos como parâmetro.</p>
+  <p><strong>Por que usar:</strong> muito útil para respostas de API, coleções, etc.</p>
+
+  <pre><code>interface RespostaAPI&lt;T&gt; {
+  dados: T;
+  status: number;
+  mensagem?: string;
+}
+
+interface UsuarioAPI {
+  nome: string;
+  idade: number;
+}
+
+const resp: RespostaAPI&lt;UsuarioAPI&gt; = {
+  dados: { nome: "Ana", idade: 25 },
+  status: 200
+};</code></pre>
+
+  <h4>Narrowing e tipos especiais</h4>
+  <p><strong>O que é:</strong> quando o TypeScript “afina” o tipo baseado em checagens que você faz.</p>
+  <p><strong>Por que usar:</strong> te permite trabalhar com tipos union de forma segura.</p>
+
+  <pre><code>function imprimirId(id: string | number) {
+  if (typeof id === "string") {
+    console.log(id.toUpperCase());
+  } else {
+    console.log(id.toFixed(2));
+  }
+}</code></pre>
+
+  <h4>Utility types importantes</h4>
+  <p><strong>O que é:</strong> tipos prontos que transformam outros tipos.</p>
+  <p><strong>Por que usar:</strong> evitam criar variações de tipos na mão.</p>
+
+  <pre><code>interface Usuario {
+  nome: string;
+  idade: number;
+  email: string;
+}
+
+/* Torna todas as propriedades opcionais */
+type UsuarioParcial = Partial&lt;Usuario&gt;;
+
+/* Torna todas obrigatórias */
+type UsuarioCompleto = Required&lt;Usuario&gt;;
+
+/* Pega só algumas propriedades */
+type UsuarioPublico = Pick&lt;Usuario, "nome" | "email"&gt;;
+
+/* Remove algumas propriedades */
+type UsuarioSemEmail = Omit&lt;Usuario, "email"&gt;;
+
+/* Record: mapa de chaves para um tipo */
+type MapaUsuarios = Record&lt;string, Usuario&gt;;
+
+/* Readonly: não pode alterar propriedades */
+type UsuarioReadonly = Readonly&lt;Usuario&gt;;</code></pre>
+
+  <h4>keyof e indexed access</h4>
+  <p><strong>O que é:</strong> <code>keyof</code> pega as chaves de um tipo como união de strings.</p>
+  <p><strong>Por que usar:</strong> permite criar funções genéricas que acessam propriedades de forma segura.</p>
+
+  <pre><code>type ChavesUsuario = keyof Usuario; // "nome" | "idade" | "email"
+
+function pegarPropriedade(
+  usuario: Usuario,
+  chave: ChavesUsuario
+) {
+  return usuario[chave];
+}</code></pre>
+</section>
+
+<section id="ts-type-guards" class="topic">
+  <h3>Type Guards e Narrowing</h3>
+  <p><strong>O que é:</strong> técnicas para refinar tipos em tempo de execução, permitindo TypeScript entender melhor o código.</p>
+  <p><strong>Por que usar:</strong> torna o código mais seguro e elimina a necessidade de type assertions (as).</p>
+
+  <h4>Typeof guard</h4>
+  <pre><code>function processar(valor: string | number) {
+  if (typeof valor === "string") {
+    // TypeScript sabe que aqui é string
+    return valor.toUpperCase();
+  } else {
+    // TypeScript sabe que aqui é number
+    return valor.toFixed(2);
+  }
+}</code></pre>
+
+  <h4>Instanceof guard</h4>
+  <pre><code>class Cachorro {
+  latir() { console.log("Au au!"); }
+}
+
+class Gato {
+  miar() { console.log("Miau!"); }
+}
+
+function fazerBarulho(animal: Cachorro | Gato) {
+  if (animal instanceof Cachorro) {
+    animal.latir();
+  } else {
+    animal.miar();
+  }
+}</code></pre>
+
+  <h4>In operator (checar propriedade)</h4>
+  <pre><code>interface Carro {
+  dirigir(): void;
+}
+
+interface Barco {
+  navegar(): void;
+}
+
+function mover(veiculo: Carro | Barco) {
+  if ("dirigir" in veiculo) {
+    veiculo.dirigir();
+  } else {
+    veiculo.navegar();
+  }
+}</code></pre>
+
+  <h4>Type predicate (custom guard)</h4>
+  <p><strong>O que é:</strong> função que retorna <code>valor is Tipo</code> para criar guards customizados.</p>
+  <pre><code>interface Peixe {
+  nadar(): void;
+}
+
+interface Passaro {
+  voar(): void;
+}
+
+// Type predicate
+function isPeixe(animal: Peixe | Passaro): animal is Peixe {
+  return (animal as Peixe).nadar !== undefined;
+}
+
+function moverAnimal(animal: Peixe | Passaro) {
+  if (isPeixe(animal)) {
+    animal.nadar();
+  } else {
+    animal.voar();
+  }
+}</code></pre>
+
+  <h4>Discriminated unions</h4>
+  <p><strong>O que é:</strong> usar uma propriedade comum para diferenciar tipos.</p>
+  <pre><code>interface Circulo {
+  tipo: "circulo";
+  raio: number;
+}
+
+interface Retangulo {
+  tipo: "retangulo";
+  largura: number;
+  altura: number;
+}
+
+type Forma = Circulo | Retangulo;
+
+function calcularArea(forma: Forma) {
+  switch (forma.tipo) {
+    case "circulo":
+      return Math.PI * forma.raio ** 2;
+    case "retangulo":
+      return forma.largura * forma.altura;
+  }
+}</code></pre>
+</section>
+
+<section id="ts-utility-types" class="topic">
+  <h3>Utility Types avançados</h3>
+  <p><strong>O que é:</strong> tipos utilitários embutidos no TypeScript para transformar tipos existentes.</p>
+  <p><strong>Por que usar:</strong> evita repetição e torna código mais flexível.</p>
+
+  <h4>Partial&lt;T&gt;</h4>
+  <p><strong>O que é:</strong> torna todas as propriedades opcionais.</p>
+  <pre><code>interface Usuario {
+  nome: string;
+  email: string;
+  idade: number;
+}
+
+// Partial permite passar apenas algumas propriedades
+function atualizarUsuario(id: number, dados: Partial&lt;Usuario&gt;) {
+  // pode passar só { nome: "João" } sem email e idade
+}
+
+atualizarUsuario(1, { nome: "João" });</code></pre>
+
+  <h4>Required&lt;T&gt;</h4>
+  <p><strong>O que é:</strong> torna todas as propriedades obrigatórias.</p>
+  <pre><code>interface Config {
+  host?: string;
+  port?: number;
+}
+
+const configCompleta: Required&lt;Config&gt; = {
+  host: "localhost", // agora obrigatório
+  port: 3000         // agora obrigatório
+};</code></pre>
+
+  <h4>Readonly&lt;T&gt;</h4>
+  <p><strong>O que é:</strong> torna todas as propriedades somente leitura.</p>
+  <pre><code>const usuario: Readonly&lt;Usuario&gt; = {
+  nome: "Ana",
+  email: "ana@email.com",
+  idade: 25
+};
+
+// usuario.nome = "Maria"; // ❌ ERRO: não pode modificar</code></pre>
+
+  <h4>Pick&lt;T, K&gt;</h4>
+  <p><strong>O que é:</strong> cria tipo com apenas propriedades selecionadas.</p>
+  <pre><code>type UsuarioBasico = Pick&lt;Usuario, "nome" | "email"&gt;;
+// { nome: string; email: string; }</code></pre>
+
+  <h4>Omit&lt;T, K&gt;</h4>
+  <p><strong>O que é:</strong> cria tipo removendo propriedades específicas.</p>
+  <pre><code>type UsuarioSemIdade = Omit&lt;Usuario, "idade"&gt;;
+// { nome: string; email: string; }</code></pre>
+
+  <h4>Record&lt;K, T&gt;</h4>
+  <p><strong>O que é:</strong> cria objeto com chaves K e valores T.</p>
+  <pre><code>type Notas = Record&lt;string, number&gt;;
+
+const notasAlunos: Notas = {
+  "João": 8.5,
+  "Maria": 9.0,
+  "Pedro": 7.5
+};</code></pre>
+
+  <h4>Exclude&lt;T, U&gt; e Extract&lt;T, U&gt;</h4>
+  <pre><code>type Cor = "vermelho" | "verde" | "azul" | "amarelo";
+
+type CoresQuentes = Exclude&lt;Cor, "verde" | "azul"&gt;;
+// "vermelho" | "amarelo"
+
+type CoresFrias = Extract&lt;Cor, "verde" | "azul"&gt;;
+// "verde" | "azul"</code></pre>
+
+  <h4>ReturnType&lt;T&gt; e Parameters&lt;T&gt;</h4>
+  <p><strong>O que é:</strong> extrai tipo de retorno ou parâmetros de função.</p>
+  <pre><code>function criar(nome: string, idade: number) {
+  return { nome, idade };
+}
+
+type Retorno = ReturnType&lt;typeof criar&gt;;
+// { nome: string; idade: number; }
+
+type Params = Parameters&lt;typeof criar&gt;;
+// [string, number]</code></pre>
+</section>
+
+<section id="ts-decorators" class="topic">
+  <h3>Decorators</h3>
+  <p><strong>O que é:</strong> funções especiais que modificam classes, métodos ou propriedades (feature experimental).</p>
+  <p><strong>Por que usar:</strong> adicionar metadados, validação, logging etc de forma declarativa.</p>
+  <p class="small-note">
+    ⚠️ Decorators são experimentais. Habilite no tsconfig.json: <code>"experimentalDecorators": true</code>
+  </p>
+
+  <h4>Class Decorator</h4>
+  <pre><code>// Decorator que adiciona timestamp
+function Timestamped(constructor: Function) {
+  constructor.prototype.timestamp = new Date();
+}
+
+@Timestamped
+class Pessoa {
+  constructor(public nome: string) {}
+}
+
+const p = new Pessoa("João");
+console.log((p as any).timestamp);</code></pre>
+
+  <h4>Method Decorator</h4>
+  <pre><code>function Log(
+  target: any,
+  propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
+  const metodoOriginal = descriptor.value;
+
+  descriptor.value = function (...args: any[]) {
+    console.log(`Chamando ${propertyKey} com:`, args);
+    const resultado = metodoOriginal.apply(this, args);
+    console.log(`Resultado:`, resultado);
+    return resultado;
+  };
+}
+
+class Calculadora {
+  @Log
+  somar(a: number, b: number) {
+    return a + b;
+  }
+}
+
+const calc = new Calculadora();
+calc.somar(2, 3); // Loga automaticamente</code></pre>
+
+  <h4>Property Decorator</h4>
+  <pre><code>function MinLength(min: number) {
+  return function (target: any, propertyKey: string) {
+    let valor: string;
+
+    const getter = () => valor;
+    const setter = (novoValor: string) => {
+      if (novoValor.length < min) {
+        throw new Error(`${propertyKey} deve ter pelo menos ${min} caracteres`);
+      }
+      valor = novoValor;
+    };
+
+    Object.defineProperty(target, propertyKey, {
+      get: getter,
+      set: setter
+    });
+  };
+}
+
+class Usuario {
+  @MinLength(3)
+  nome: string = "";
+}
+
+const u = new Usuario();
+// u.nome = "Jo"; // ❌ Erro: deve ter pelo menos 3 caracteres
+u.nome = "João"; // ✅ OK</code></pre>
+</section>
+
+<section id="ts-dom" class="topic">
+  <h3>DOM + TypeScript</h3>
+
+  <p><strong>O que é:</strong> interação com elementos da página (inputs, botões, etc.) com o TypeScript sabendo os tipos.</p>
+  <p><strong>Por que usar:</strong> evita acessar propriedades incorretas e te dá autocomplete no editor.</p>
+
+  <pre><code>// querySelector: busca elemento por seletor CSS (retorna Element | null)
+const titulo = document.querySelector("h1");
+
+// Sempre checar se existe (pode ser null)
+if (titulo) {
+  // textContent: altera o texto dentro do elemento
+  titulo.textContent = "Título atualizado com TS!";
+}
+
+// getElementById: busca por ID
+// "as HTMLInputElement": informa ao TypeScript o tipo específico do elemento
+const inputNome = document.getElementById("nome") as HTMLInputElement;
+const botao = document.getElementById("btn") as HTMLButtonElement;
+
+// addEventListener: adiciona evento de clique
+botao.addEventListener("click", () =&gt; {
+  // value: propriedade que só existe em inputs (por isso precisamos do "as")
+  alert(`Você digitou: ${inputNome.value}`);
+});</code></pre>
+
+  <p class="small-note">
+    Em projetos reais, você normalmente usa TS com bundlers (Vite, Webpack) ou frameworks como React/Angular.
+  </p>
+</section>
+
+<section id="ts-modulos" class="topic">
+  <h3>Módulos e organização</h3>
+
+  <p><strong>O que é:</strong> dividir o código em arquivos com <code>export</code> e <code>import</code>.</p>
+  <p><strong>Por que usar:</strong> mantém o projeto organizado e evita variáveis globais.</p>
+
+  <pre><code>// ========== utils.ts ==========
+// export: torna função/variável disponível para outros arquivos
+export function somar(a: number, b: number): number {
+  return a + b;
+}
+
+export const PI = 3.14159;
+
+// ========== app.ts ==========
+// import: traz funções/variáveis de outro arquivo
+// { somar, PI }: importação nomeada (destructuring)
+// "./utils": caminho do arquivo (sem .ts)
+import { somar, PI } from "./utils";
+
+console.log(somar(2, 3)); // 5
+console.log(PI);          // 3.14159</code></pre>
+</section>
+
+<section id="ts-async" class="topic">
+  <h3>Promises e async/await</h3>
+
+  <p><strong>O que é:</strong> forma moderna de lidar com código assíncrono (que demora), como requisições a APIs.</p>
+  <p><strong>Por que usar:</strong> deixa o código muito mais legível do que cadeias grandes de <code>.then()</code>.</p>
+
+  <p><strong>Exemplo explicado:</strong></p>
+  <ul>
+    <li><code>function buscarDados(): Promise&lt;string&gt;</code> – função que devolve uma promessa de string;</li>
+    <li><code>new Promise((resolve) =&gt; { ... })</code> – cria manualmente uma Promise;</li>
+    <li><code>setTimeout(..., 1000)</code> – simula uma operação demorada (1 segundo);</li>
+    <li><code>async function executar()</code> – função assíncrona que pode usar <code>await</code>;</li>
+    <li><code>await buscarDados()</code> – espera a Promise terminar e pega o resultado;</li>
+    <li><code>try / catch</code> – trata erros que podem acontecer durante a execução.</li>
+  </ul>
+
+  <pre><code>// Função que retorna uma Promise (operação assíncrona)
+function buscarDados(): Promise&lt;string&gt; {
+  // new Promise: cria uma nova promessa
+  return new Promise((resolve) =&gt; {
+    // setTimeout: executa código depois de X milissegundos
+    setTimeout(() =&gt; {
+      // resolve: marca a promessa como concluída com sucesso
+      resolve("Dados recebidos!");
+    }, 1000); // espera 1 segundo (1000ms)
+  });
+}
+
+// async: permite usar await dentro da função
+async function executar() {
+  try {
+    // await: pausa execução até Promise completar
+    const resultado = await buscarDados();
+    console.log(resultado); // "Dados recebidos!"
+  } catch (erro) {
+    // catch: captura erros se algo der errado
+    console.error("Erro:", erro);
+  }
+}
+
+executar();</code></pre>
+
+  <h4>Exemplo com fetch (API)</h4>
+  <pre><code>// Define a estrutura dos dados que vamos receber
+interface Post {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+}
+
+async function carregarPosts() {
+  // fetch: faz requisição HTTP para buscar dados
+  const resposta = await fetch("https://jsonplaceholder.typicode.com/posts");
+
+  // .json(): converte resposta para objeto JavaScript
+  // Post[]: informa que é um array de Posts
+  const posts: Post[] = await resposta.json();
+
+  // slice(0, 5): pega apenas os 5 primeiros
+  // forEach: loop para cada item
+  posts.slice(0, 5).forEach((post) =&gt; {
+    console.log(post.title);
+  });
+}</code></pre>
+</section>
+
+<section id="ts-config" class="topic">
+  <h3>tsconfig.json</h3>
+  <p><strong>O que é:</strong> arquivo de configuração do TypeScript que define como o compilador deve funcionar.</p>
+  <p><strong>Por que usar:</strong> controla rigorosidade, módulos, target, e outras opções importantes.</p>
+
+  <h4>Configuração básica</h4>
+  <pre><code>{
+  "compilerOptions": {
+    // Versão do JavaScript gerado
+    "target": "ES2020",
+
+    // Sistema de módulos
+    "module": "ESNext",
+    "moduleResolution": "node",
+
+    // Diretórios
+    "outDir": "./dist",          // onde salvar .js compilados
+    "rootDir": "./src",           // onde estão os .ts
+
+    // Qualidade e rigorosidade
+    "strict": true,               // ativa todas checagens estritas
+    "noImplicitAny": true,        // erro se tipo for 'any' implícito
+    "strictNullChecks": true,     // null e undefined são tipos separados
+    "strictFunctionTypes": true,
+
+    // Recursos extras
+    "esModuleInterop": true,      // compatibilidade com imports
+    "skipLibCheck": true,         // pula checagem de arquivos .d.ts
+    "forceConsistentCasingInFileNames": true,
+
+    // Source maps (para debug)
+    "sourceMap": true,
+
+    // Permite JSON imports
+    "resolveJsonModule": true
+  },
+
+  "include": ["src/**/*"],        // arquivos para compilar
+  "exclude": ["node_modules"]     // arquivos para ignorar
+}</code></pre>
+
+  <h4>Opções importantes</h4>
+  <pre><code>{
+  "compilerOptions": {
+    // Decorators (Angular, NestJS, etc)
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    // JSX (React)
+    "jsx": "react-jsx",
+
+    // Permite JS junto com TS
+    "allowJs": true,
+    "checkJs": true,
+
+    // Remove comentários do output
+    "removeComments": true,
+
+    // Não emite arquivos se houver erro
+    "noEmitOnError": true,
+
+    // Path aliases (imports curtos)
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@utils/*": ["src/utils/*"]
+    }
+  }
+}</code></pre>
+
+  <h4>Configurações por ambiente</h4>
+  <pre><code>// tsconfig.json (base)
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "strict": true
+  }
+}
+
+// tsconfig.build.json (produção)
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": false,
+    "removeComments": true
+  }
+}
+
+// tsconfig.test.json (testes)
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest", "node"]
+  }
+}</code></pre>
+
+  <h4>Targets mais comuns</h4>
+  <ul>
+    <li><code>"ES5"</code> – compatível com IE11 (antigo)</li>
+    <li><code>"ES6"/"ES2015"</code> – navegadores modernos básicos</li>
+    <li><code>"ES2020"</code> – navegadores recentes (recomendado)</li>
+    <li><code>"ESNext"</code> – recursos mais novos disponíveis</li>
+  </ul>
+</section>
+
+<section id="ts-boas-praticas" class="topic">
+  <h3>Boas práticas</h3>
+  <p><strong>O que é:</strong> convenções e padrões para escrever TypeScript de qualidade.</p>
+  <p><strong>Por que usar:</strong> código mais legível, manutenível e menos propenso a bugs.</p>
+
+  <h4>1. Evite 'any' sempre que possível</h4>
+  <pre><code>// ❌ EVITE
+function processar(dados: any) {
+  return dados.valor;
+}
+
+// ✅ PREFIRA
+interface Dados {
+  valor: number;
+}
+
+function processar(dados: Dados) {
+  return dados.valor;
+}
+
+// Se realmente não sabe o tipo, use 'unknown'
+function processar(dados: unknown) {
+  if (typeof dados === "object" && dados !== null) {
+    // TypeScript te força a checar o tipo
+  }
+}</code></pre>
+
+  <h4>2. Use interfaces para objetos, types para uniões</h4>
+  <pre><code>// ✅ Interface para objetos (podem ser estendidas)
+interface Usuario {
+  nome: string;
+  email: string;
+}
+
+interface UsuarioAdmin extends Usuario {
+  nivel: number;
+}
+
+// ✅ Type para uniões, literais, aliases
+type Status = "ativo" | "inativo" | "pendente";
+type ID = string | number;</code></pre>
+
+  <h4>3. Seja específico com tipos</h4>
+  <pre><code>// ❌ GENÉRICO DEMAIS
+function buscar(id: string): object {
+  return { id, nome: "João" };
+}
+
+// ✅ ESPECÍFICO
+interface Usuario {
+  id: string;
+  nome: string;
+}
+
+function buscar(id: string): Usuario {
+  return { id, nome: "João" };
+}</code></pre>
+
+  <h4>4. Use readonly quando apropriado</h4>
+  <pre><code>interface Config {
+  readonly apiUrl: string;
+  readonly timeout: number;
+}
+
+const config: Config = {
+  apiUrl: "https://api.exemplo.com",
+  timeout: 5000
+};
+
+// config.apiUrl = "outro"; // ❌ ERRO</code></pre>
+
+  <h4>5. Prefira const assertions para literais</h4>
+  <pre><code>// ❌ tipo será string[]
+const cores = ["vermelho", "verde", "azul"];
+
+// ✅ tipo será readonly ["vermelho", "verde", "azul"]
+const cores = ["vermelho", "verde", "azul"] as const;
+
+// Útil para objetos também
+const config = {
+  host: "localhost",
+  port: 3000
+} as const;</code></pre>
+
+  <h4>6. Use optional chaining e nullish coalescing</h4>
+  <pre><code>// ✅ Optional chaining (?.)
+const nome = usuario?.endereco?.rua;
+
+// ✅ Nullish coalescing (??)
+const porta = config.port ?? 3000;
+
+// ❌ EVITE
+const nome = usuario && usuario.endereco && usuario.endereco.rua;
+const porta = config.port || 3000; // problema: 0 é falsy!</code></pre>
+
+  <h4>7. Organize imports</h4>
+  <pre><code>// ✅ BOA ORGANIZAÇÃO
+// 1. Bibliotecas externas
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+// 2. Arquivos internos (paths absolutos)
+import { Button } from "@components/Button";
+import { formatarData } from "@utils/data";
+
+// 3. Tipos
+import type { Usuario } from "@types/usuario";
+
+// 4. Estilos
+import "./styles.css";</code></pre>
+
+  <h4>8. Documente tipos complexos</h4>
+  <pre><code>/**
+ * Representa um usuário do sistema
+ * @property id - Identificador único
+ * @property nome - Nome completo
+ * @property role - Papel do usuário (admin, user, guest)
+ */
+interface Usuario {
+  id: string;
+  nome: string;
+  role: "admin" | "user" | "guest";
+}
+
+/**
+ * Busca usuário por ID
+ * @param id - ID do usuário
+ * @returns Promise com dados do usuário ou null se não encontrado
+ */
+async function buscarUsuario(id: string): Promise&lt;Usuario | null&gt; {
+  // implementação
+}</code></pre>
+
+  <h4>9. Use enums para constantes relacionadas</h4>
+  <pre><code>// ✅ Enum para status
+enum StatusPedido {
+  Pendente = "PENDENTE",
+  Processando = "PROCESSANDO",
+  Enviado = "ENVIADO",
+  Entregue = "ENTREGUE",
+  Cancelado = "CANCELADO"
+}
+
+function atualizarStatus(pedidoId: string, status: StatusPedido) {
+  // TypeScript garante que só valores válidos sejam passados
+}
+
+atualizarStatus("123", StatusPedido.Enviado);</code></pre>
+
+  <h4>10. Configure linter (ESLint + TypeScript)</h4>
+  <pre><code>// .eslintrc.json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/explicit-function-return-type": "warn"
+  }
+}</code></pre>
+
+  <h4>Resumo das boas práticas</h4>
+  <ul>
+    <li>✅ Ative <code>"strict": true</code> no tsconfig.json</li>
+    <li>✅ Evite <code>any</code>, use <code>unknown</code> quando necessário</li>
+    <li>✅ Seja específico com tipos de retorno de funções</li>
+    <li>✅ Use <code>readonly</code> para dados imutáveis</li>
+    <li>✅ Prefira interfaces para objetos</li>
+    <li>✅ Use type guards em vez de type assertions</li>
+    <li>✅ Documente código complexo com JSDoc</li>
+    <li>✅ Configure ESLint para TypeScript</li>
+    <li>✅ Use utility types (Partial, Pick, Omit etc)</li>
+    <li>✅ Organize imports de forma consistente</li>
+  </ul>
+</section>
